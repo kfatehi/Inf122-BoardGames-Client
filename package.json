@@ -1,0 +1,14 @@
+{
+  "name": "Inf122-BoardGames-Client",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Jman012/Inf122-BoardGames-Client.git",
+  "author": "Keyvan Fatehi <keyvanfatehi@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "http-server public"
+  },
+  "devDependencies": {
+    "http-server": "^0.9.0"
+  }
+}
