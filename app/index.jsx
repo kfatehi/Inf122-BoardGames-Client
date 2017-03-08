@@ -2,7 +2,7 @@
 //import 'bootstrap/less/bootstrap.less';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, browserHistory } from 'react-router';
+import { Router, Route, hashHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reducer from './reducer';
@@ -20,7 +20,7 @@ const App = React.createClass({
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={browserHistory}>
+    <Router history={hashHistory}>
       <Route path="/" component={App} />
     </Router>
   </Provider>,

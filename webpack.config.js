@@ -19,7 +19,7 @@ module.exports = {
     path: `${__dirname}/dist`,
     library: 'bundle',
     filename: 'bundle.js',
-    publicPath: '/',
+    publicPath: '',
   },
   module: {
     loaders: [
