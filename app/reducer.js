@@ -7,7 +7,9 @@ const initialState = {
   connecting: false,
   connected: false,
   connectionError: null,
-  userProfiles: {}
+  userProfiles: {},
+  openGames: [],
+  supportedGames: [],
 };
 
 export default function(state=initialState, action) {
@@ -31,6 +33,12 @@ export default function(state=initialState, action) {
     case 'SET_USER_PROFILE': {
       const entry = { [action.username]: { games: action.games } };
       return { ...state, userProfiles: { ...state.userProfiles, ...entry } }
+    }
+    case 'SET_OPEN_GAMES': {
+      return { ...state, openGames: action.openGames }
+    }
+    case 'SET_ALL_SUPPORTED_GAMES': {
+      return { ...state, supportedGames: action.games }
     }
   }
   return state;

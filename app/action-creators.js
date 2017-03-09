@@ -24,6 +24,8 @@ export const connect = (url, username) => {
         connection.onopen = function () {
           dispatch(toServer({ type: "LOGIN", username }))
           dispatch(toServer({ type: "GET_USER_PROFILE", username  }));
+          dispatch(toServer({ type: "GET_OPEN_GAMES" }));
+          dispatch(toServer({ type: "GET_ALL_SUPPORTED_GAMES" }));
         };
       } catch (error) {
         dispatch({ type: 'CONNECTION_ERROR', error: error.message });

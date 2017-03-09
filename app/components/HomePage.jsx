@@ -15,8 +15,11 @@ export const Home = React.createClass({
       connectionError,
       userProfiles,
       myProfile,
+      openGames,
+      supportedGames,
 
-      disconnect
+      disconnect,
+      toServer
     } = this.props;
 
     const whyShitError = () => <a href="http://stackoverflow.com/a/31003057/511621">Why is this error vague?</a>;
@@ -30,6 +33,18 @@ export const Home = React.createClass({
           <PlayerProfile username={username} games={myProfile.games}/>
           : null
       }
+
+      {openGames.map((g,i)=><div key={i}>
+        an open game
+      </div>)}
+
+
+      {supportedGames.map(({
+        name, image, maxPlayers
+      },i)=><div key={i}>
+        <span>{name}</span> <img src={image} alt={name}/>
+      </div>)}
+
     </div>
   },
 });
@@ -43,7 +58,9 @@ function mapStateToProps(state) {
     connected: state.connected,
     connectionError: state.connectionError,
     userProfiles: state.userProfiles,
-    myProfile: state.userProfiles[state.username]
+    myProfile: state.userProfiles[state.username],
+    openGames: state.openGames,
+    supportedGames: state.supportedGames,
   }
 }
 
