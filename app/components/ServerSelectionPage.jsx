@@ -4,7 +4,7 @@ import * as actionCreators from '../action-creators';
 
 export const ServerSelection = React.createClass({
   getInitialState() {
-    return { value: localStorage.getItem("PROXY_TARGET") || "" };
+    return { value: localStorage.getItem("PROXY_TARGET") || "ws://localhost:4567/games" };
   },
   handleChange(e) {
     this.setState({ value: e.target.value });
