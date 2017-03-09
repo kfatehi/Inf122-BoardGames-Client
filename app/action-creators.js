@@ -1,18 +1,9 @@
 export const connect = (url, username) => {
   return function(dispatch, getState) {
     if (! getState().connected) {
-      dispatch({ type: 'CONNECT', url });
       try {
         const connection = new WebSocket(url);
-        console.log('connection built');
-
-        connection.onopen = function () {
-          dispatch({ type: 'CONNECTED', connection });
-
-          connection.send(JSON.stringify({
-            type: "LOGIN", username
-          }))
-        };
+        dispatch({ type: 'CONNECT', url, connection });
 
         connection.onerror = function (error) {
           dispatch({ type: 'CONNECTION_ERROR', error: "Connection error" });
@@ -22,7 +13,7 @@ export const connect = (url, username) => {
           try {
             dispatch(JSON.parse(message.data));
           } catch (e) {
-            dispatch({ type: 'CONNECTION_ERROR', error: "Malformed message" });
+            dispatch({ type: 'CONNECTION_ERROR', error: e.stack });
           }
         };
 
@@ -30,9 +21,25 @@ export const connect = (url, username) => {
           dispatch({ type: 'CONNECTION_CLOSED' });
         };
 
+        connection.onopen = function () {
+          dispatch(toServer({ type: "LOGIN", username }))
+          dispatch(toServer({ type: "GET_USER_PROFILE", username  }));
+        };
       } catch (error) {
         dispatch({ type: 'CONNECTION_ERROR', error: error.message });
       }
     }
   };
+};
+
+export const disconnect = () => {
+  return function(dispatch, getState) {
+    getState().connection.close();
+  }
+}
+
+export const toServer = (action) => {
+  return function(dispatch, getState) {
+    getState().connection.send(JSON.stringify(action));
+  }
 };
