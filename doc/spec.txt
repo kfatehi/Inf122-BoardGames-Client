@@ -1,0 +1,230 @@
+Action: User Login
+Client sends and waits:
+{ 
+type: “LOGIN”,
+username : 'UNIQUE_NAME'
+}
+
+
+Server receives, checks if user exists, and responds with either:
+1. { type : 'LOGIN_SUCCESS' }
+2. { type : 'LOGIN_ERROR’, errorMessage : 'ERR TO PRINT TO CLIENT' }
+
+
+Action: View Personal Stats
+Client sends and waits:
+{ type: "GET_USER_PROFILE", username: “alvin” }
+
+
+Server receives, performs lookup, and responds with either:
+1. If user has played some games before..
+{
+        type: “SET_USER_PROFILE”,
+        username: “alvin”,
+        games: [{
+gameType: "Tic Tac Toe",
+gamesWon : "Integer value",
+        gamesLost : "Integer value",
+        gamesDraw: “Integer value”
+}]
+}
+
+
+2. If user has not played any games..
+{
+        type: “SET_USER_PROFILE”,
+        username: “alvin”,
+games: []
+}
+
+
+Action: List Open Games
+Client sends and waits:
+{ type : "GET_OPEN_GAMES" }
+
+
+Server receives, gathers list of games "in waiting", and responds with either:
+1. If games available..
+{
+        type : "SET_OPEN_GAMES",
+        openGames : [ {
+                id: 123
+name : "Tic tac toe",
+pugName: “3-IN-A-ROW LETS GO”,
+players : ["Alvin"],
+maxPlayers: 2,
+image: “url”
+}{
+id: 1234,
+name : "Checkers",
+pugName: “I bet y’all cant beat me im the grandmaster y’all”,
+players : ["Banana King"],
+maxPlayers: 2,
+image: “url”
+}]        
+}
+
+
+2. If no games available..
+{
+type: "SET_OPEN_GAMES",
+openGames : [] 
+}
+
+
+Where:
+* id = The server creates a unique id for every newly created game.
+* openGames = The games that are waiting for full room to start.
+
+
+Action: Get All Supported Games
+Client sends and waits:
+{ type : "GET_ALL_SUPPORTED_GAMES" }
+
+
+Server receives action, gathers list of available games, and sends either:
+1. If we have >= 1 supported game
+{
+        type : "SET_ALL_SUPPORTED_GAMES",
+        games: [{
+                name: "Tic Tac Toe",
+                maxPlayers: 2,
+image: “url”
+        }{
+                name: "Checkers",
+                maxPlayers: 2,
+image: “url”
+}]
+}
+
+
+2. If we have no games on server
+{
+        type: "SET_ALL_SUPPORTED_GAMES",
+        games:[]
+}
+
+
+Action: Create Game
+Client sends and waits:
+{ type : "CREATE_GAME", gameName: "Tic Tac Toe", pugName : "Last Person Standing"}[a][b][c][d]
+
+
+Server receives action, creates game, and sends:
+{
+        type: "NEWLY_CREATED_GAME",
+        gameName: "Tic Tac Toe",
+        gameId: 123
+}
+
+
+Action: Join Game
+Client sends and waits:
+{ type: "JOIN_GAME", gameId: 123 }
+
+
+Server receives action, and determines if user can be added to OPEN GAME. Two scenarios can happen:
+1. Player successfully added to existing game
+{
+        type: "JOIN_GAME_SUCCESS"
+}
+
+
+2. Game filled up, or game no longer exists
+{
+        type: "JOIN_GAME_FAILED",
+        errorMessage: "Game no longer exists"
+}
+
+
+Action: Game Initialization
+Both clients, whether the creator or the joiner, are in waiting state until the game is officially begun. They may have spinners or “waiting for opponent…” or anything else. The server will send GAME_INIT when all players have joined.
+Server Push
+{
+type: “GAME_INIT”,
+//boardOffset: boolean,[e][f][g]
+opponent: “kfatehi”,
+needsFlip:boolean,
+checkered:boolean,
+board_rows: int,
+board_cols: int,
+}
+
+
+
+
+Details
+* Opponent: gives the username of your opponent to display for the client.
+* boardOffset. In some japanese games like Go/Pente, the pieces are not placed entirely within a square. They’re instead placed on the intersections of the lines. The client, encountering a true boardOffset value, will make a board with +1 rows and +1 cols and shift the board 0.5 cell size, while pieces are placed in original positions. This achieves the effect of placing pieces in programmatic squares but visually on intersections.
+* needsFlip: if the client needs to flip the board so that their pieces are on bottom. Like for chess/checkers it’ll be true for one of the players and false for the other. Connect four, it would be false for both players. [h][i]
+* Checkered: if the board should alternate colors for each spot. Like chess/checkers
+* Board_rows, board_cols[j][k]
+   * Rows and cols are just integers indicating the set size of the board
+
+
+
+
+Action: Player Actions
+While it is the player’s turn, this action may be emitted. This is the only kind of action the client can make for any kind of turn. 
+* If the client’s turn is placement, this action is interpreted as placing a piece from the user’s pool with id 123 onto the board at pos 0,0.
+* If the client’s turn is movement, this action is interpreted as moving a piece on the board from where ever it was to the position 0,0. It doesn’t matter where the piece was originally. The server will see the client wants to move pieceid=123 to 0,0 and see if it’s valid or not.
+{
+type: “TURN”, 
+pieceId:123, 
+r:0, 
+c:0
+}
+Action: Game State Change
+These actions are pushed from the server and will alter the state of the player’s board game. Note that one of these will be sent immediately after GAME_INIT in order to tell the clients whose turn it is, what type of turn they can play, depending on their turn type the valid moves. 
+The client, upon receiving this state change action, should first look at the diffs. That tells the client exactly what changed, such as the other client placing/moving a piece to a specific coordinate. If the coordinates are -1,-1 then its interpreted as the piece having been captured.
+The client should then look at the board as a double check that everything on the client’s board is how it should be. Same with user_pool.
+
+
+{
+type: “SET_GAME_STATE”,
+turn: “jlinnell”,
+turn_type: “place” (OR “move”),
+valid_placements: [ {r:0,c:0}, {r:3,c:5}, …],
+valid_movements: [
+{pieceId:123, moves:[{r:0,c:0}, {r:1,c:1}, …]},
+...
+]
+board: [[Piece]],
+user_pool: [Piece],
+diffs:[
+{
+pieceId:123, 
+r:0, 
+c:0
+},
+...
+]
+}
+Where Piece [l][m][n]= {
+id: int,
+owner: “jlinnell”,
+image: “knight.png”
+}
+Details
+* A piece’s coordinates are inferred from its location in the board 2D array. Empty spaces in the board are null in the JSON.
+* Turn: indicates whose turn it is. 
+* Turn_type: what possible move can be played. “Place” means the player is allowed to place a piece from their pool to the board. “Move” means the player is allowed to move a piece around on the board.
+   * If the turn is “place”
+      * Then valid_placements is provided in the json. It’s simply a list of coordinates which the player can place a piece from their pool
+   * If the turn is “move”
+      * The valid_movements is provided in the json. It’s a bit more complicated
+      * It is an array of json objects. Each one has a pieceId attribute and then in “moves” is a list of board positions that specific piece can be moved. 
+      * There will be a json object for each available piece.
+* The actual board 2d array holds the pieces in the board. If it’s empty for init then the client can assume the board is just empty, but it should still make the data structure based on rows and cols. If there are pieces on the board but not all spaces are taken up by pieces, an empty space will be indicated by ‘{}’.
+* 
+
+Action: Game End
+The same exact message gets sent to all clients. 
+The winner field indicates who won, if the value is equal to the client’s username display the message that your user won. If the username is not equal to your user’s username (or if its equal to the opponent but there might be >2 player games) display a message that your opponent won and you lost. 
+An empty winner field indicates a draw.
+The message field will always be included but is optional to show depending on how the client visually shows it, but for games like chess it’s nice with the special “checkmate” message.
+{
+type: “GAME_END”,
+winner: “jlinnell”,
+message: “Checkmate!”
+}
