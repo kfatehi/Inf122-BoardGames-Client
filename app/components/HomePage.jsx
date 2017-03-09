@@ -29,22 +29,25 @@ export const Home = React.createClass({
       { connected ? <div>Connected {username}@{server} {disconnectLink()}</div> : null}
       { !connected && !connecting ? <ConnectForm /> : null}
 
-      { myProfile ? 
-          <PlayerProfile username={username} games={myProfile.games}/>
-          : null
-      }
+      { connected ? <div>
 
-      {openGames.map((g,i)=><div key={i}>
-        an open game
-      </div>)}
+        { myProfile ? 
+            <PlayerProfile username={username} games={myProfile.games}/>
+            : null
+        }
+
+        {openGames.map((g,i)=><div key={i}>
+          an open game
+        </div>)}
 
 
-      {supportedGames.map(({
-        name, image, maxPlayers
-      },i)=><div key={i}>
-        <span>{name}</span> <img src={image} alt={name}/>
-      </div>)}
+        {supportedGames.map(({
+          name, image, maxPlayers
+        },i)=><div key={i}>
+          <span>{name}</span> <img src={image} alt={name}/>
+        </div>)}
 
+      </div> : null }
     </div>
   },
 });
