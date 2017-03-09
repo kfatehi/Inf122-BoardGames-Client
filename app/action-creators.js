@@ -1,34 +1,38 @@
-import { hashHistory } from 'react-router';
-
-
 export const connect = (url, username) => {
   return function(dispatch, getState) {
     if (! getState().connected) {
       dispatch({ type: 'CONNECT', url });
-      const connection = new WebSocket(url);
+      try {
+        const connection = new WebSocket(url);
+        console.log('connection built');
 
-      connection.onopen = function () {
-        dispatch({ type: 'CONNECTED', connection });
+        connection.onopen = function () {
+          dispatch({ type: 'CONNECTED', connection });
 
-        connection.send(JSON.stringify({
-          type: "LOGIN", username
-        }))
-      };
+          connection.send(JSON.stringify({
+            type: "LOGIN", username
+          }))
+        };
 
-      connection.onerror = function (error) {
-        dispatch({ type: 'CONNECTION_ERROR', error });
-        // go back to server selection page
-        hashHistory.push('/connect');
-      };
+        connection.onerror = function (error) {
+          dispatch({ type: 'CONNECTION_ERROR', error: "Connection error" });
+        };
 
-      connection.onmessage = function (message) {
-        console.log('server message', message);
-      };
+        connection.onmessage = function (message) {
+          try {
+            dispatch(JSON.parse(message.data));
+          } catch (e) {
+            dispatch({ type: 'CONNECTION_ERROR', error: "Malformed message" });
+          }
+        };
+
+        connection.onclose = function (event) {
+          dispatch({ type: 'CONNECTION_CLOSED' });
+        };
+
+      } catch (error) {
+        dispatch({ type: 'CONNECTION_ERROR', error: error.message });
+      }
     }
   };
-};
-
-
-export const login = () => {
-  return { type: 'LOGIN' };
 };
