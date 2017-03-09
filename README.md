@@ -2,6 +2,10 @@
 
 Client for the Inf122 board games final project
 
+## Specs
+
+* [Websocket protocol](https://docs.google.com/document/d/1DvjbDIhINwD-VnO5UyMPJtZEVlLPfZ3CfmdTkcbmh8Q)
+
 ## Platform Dependencies
 
 * [node v7.6.0 or newer](https://nodejs.org/en/)
