@@ -19,6 +19,7 @@ module.exports = {
   "rules": {
     "no-console": 0,
     "react/jsx-uses-vars": [2],
+    "react/react-in-jsx-scope": true,
     "indent": [
       "error",
       2,
