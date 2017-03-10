@@ -45,3 +45,7 @@ export const toServer = (action) => {
     getState().connection.send(JSON.stringify(action));
   }
 };
+
+export const createGame = (gameName, pugName) => {
+  return toServer({ type: 'CREATE_GAME', gameName, pugName });
+};
