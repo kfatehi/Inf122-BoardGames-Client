@@ -31,8 +31,8 @@ export const Connect = React.createClass({
     const serverURL = this.state.server;
     const username = this.state.username;
 
-    localStorage.setItem("PROXY_TARGET", serverURL);
-    localStorage.setItem("USERNAME", username);
+    sessionStorage.setItem("PROXY_TARGET", serverURL);
+    sessionStorage.setItem("USERNAME", username);
 
     this.props.connect(serverURL, username);
   }

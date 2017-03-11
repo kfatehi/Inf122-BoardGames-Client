@@ -9,12 +9,13 @@ export const Pug = React.createClass({
   render() {
     const { 
       open,
+      username,
       pug,
 
       joinGame
     } = this.props;
     const imJoined = () => {
-      console.log(pug);
+      return ~pug.players.indexOf(username);
     }
     const joinView = ()=> <div>
       <button onClick={()=>joinGame(pug.id)}>Join</button>
@@ -40,7 +41,6 @@ export const Pug = React.createClass({
 
 
 function mapStateToProps(state, props) {
-  console.log(state.openGames, props.params.id);
   let openPug = state.openGames.find(g=>g.id === parseInt(props.params.id));
   return {
     open: !!openPug,

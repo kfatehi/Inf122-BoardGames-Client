@@ -1,8 +1,8 @@
 const DEFAULT_SERVER = "ws://localhost:4567/games";
 
 const initialState = {
-  server: localStorage.getItem("PROXY_TARGET") || DEFAULT_SERVER ,
-  username: localStorage.getItem("USERNAME") || '',
+  server: sessionStorage.getItem("PROXY_TARGET") || DEFAULT_SERVER ,
+  username: sessionStorage.getItem("USERNAME") || '',
   connection: null,
   connecting: false,
   connected: false,

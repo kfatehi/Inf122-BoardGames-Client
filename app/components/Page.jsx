@@ -24,7 +24,6 @@ const PageComponent = React.createClass({
     const whyShitError = () => <a href="http://stackoverflow.com/a/31003057/511621">Why is this error vague?</a>;
     const disconnectLink = () => <a href="#" onClick={disconnect}>Disconnect</a>
     return <div>
-      testtset
       { connectionError ? <div>Error: {connectionError} {whyShitError()}</div> : null}
       { connected ? <div>Connected {username}@{server} {disconnectLink()}</div> : null}
       { !connected && !connecting ? <ConnectForm /> : null}
