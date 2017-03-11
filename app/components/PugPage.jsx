@@ -8,18 +8,45 @@ import { Page } from './Page.jsx';
 export const Pug = React.createClass({
   render() {
     const { 
-      params: { id }
+      open,
+      pug,
+
+      joinGame
     } = this.props;
+    const imJoined = () => {
+      console.log(pug);
+    }
+    const joinView = ()=> <div>
+      <button onClick={()=>joinGame(pug.id)}>Join</button>
+    </div>;
+    const joinedView = ()=> <div>
+      render the board. we are joined already...
+    </div>;
+    const closedView = () => <p>
+      You cannot join this game
+    </p>;
+    const openView = ({ pugName, name }) => <div>
+      <ul>
+        <li><h3>{pugName}</h3></li>
+        <li>{name}</li>
+        { imJoined() ? joinedView() : joinView() }
+      </ul>
+    </div>;
     return <Page>
-      pug {id}
+      { open ? openView(pug) : closedView()}
     </Page>;
   },
 });
 
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
+  console.log(state.openGames, props.params.id);
+  let openPug = state.openGames.find(g=>g.id === parseInt(props.params.id));
   return {
-  };
+    open: !!openPug,
+    pug: openPug || {},
+    username: state.username,
+  }
 }
 
 export const PugPage = connect(mapStateToProps, actionCreators)(Pug); 

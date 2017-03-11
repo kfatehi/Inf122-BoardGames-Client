@@ -60,3 +60,7 @@ export const createGame = (gameName, pugName) => {
     dispatch(toServer({ type: 'CREATE_GAME', gameName, pugName }));
   }
 };
+
+export const joinGame = (gameId) => {
+  return toServer({ type: "JOIN_GAME", gameId });
+}
