@@ -12,7 +12,11 @@ export const Home = React.createClass({
     } = this.props;
     return <Page>
       {openGames.map((g,i)=><div key={i}>
-        an open game
+        <Link to={`/pugs/${g.id}`}>
+          <img src={g.image} alt={g.pugName} className="game-thumbnail"/>
+          <span>{g.pugName} ({g.name})</span>
+        </Link>
+
       </div>)}
 
       <Link to="/pugs/new">Start a new game</Link>

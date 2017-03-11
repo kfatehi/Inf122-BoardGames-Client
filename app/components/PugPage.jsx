@@ -17,11 +17,11 @@ export const Pug = React.createClass({
     const imJoined = () => {
       return ~pug.players.indexOf(username);
     }
-    const joinView = ()=> <div>
+    const joinView = () => <div>
       <button onClick={()=>joinGame(pug.id)}>Join</button>
     </div>;
     const joinedView = ()=> <div>
-      render the board. we are joined already...
+      Waiting for game to start...
     </div>;
     const closedView = () => <p>
       You cannot join this game
