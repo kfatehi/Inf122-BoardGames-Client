@@ -5,7 +5,7 @@ export const connect = (url, username) => {
     if (! getState().connected) {
       try {
         const connection = new WebSocket(url);
-        dispatch({ type: 'CONNECT', url, connection });
+        dispatch({ type: 'CONNECT', url, connection, username });
 
         connection.onerror = function (error) {
           dispatch({ type: 'CONNECTION_ERROR', error: "Connection error" });

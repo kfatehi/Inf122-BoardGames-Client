@@ -17,7 +17,7 @@ export default function(state=initialState, action) {
   console.log('action', action);
   switch (action.type) {
     case 'CONNECT': {
-      return { ...state, connection: action.connection, connectionError: null, server: action.url, connected: false, connecting: true };
+      return { ...state, connection: action.connection, connectionError: null, server: action.url, username: action.username, connected: false, connecting: true };
     }
     case 'CONNECTION_ERROR': {
       return { ...state, connectionError: action.error }
