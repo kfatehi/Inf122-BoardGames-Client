@@ -27,7 +27,7 @@ export const Pug = React.createClass({
       Waiting for game to start...
     </div>;
     const closedView = () => gameInited ? <BoardGame /> : <p>
-      You cannot join this game
+      This is not an open game. It may be full or not exist.
     </p>;
     const openView = ({ pugName, name }) => <div>
       <ul>
