@@ -19,6 +19,9 @@ export const connect = (url, username) => {
               case 'NEWLY_CREATED_GAME': {
                 hashHistory.push(`/pugs/${action.gameId}`)
               }
+              case 'GAME_INIT': {
+                hashHistory.replace(`/pugs/${action.gameId}`)
+              }
             }
           } catch (e) {
             dispatch({ type: 'CONNECTION_ERROR', error: e.stack });
