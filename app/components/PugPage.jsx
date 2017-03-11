@@ -5,12 +5,15 @@ import { Link } from 'react-router';
 
 import { Page } from './Page.jsx';
 
+import { BoardGame } from './BoardGame.jsx';
+
 export const Pug = React.createClass({
   render() {
     const { 
       open,
       username,
       pug,
+      gameInited,
 
       joinGame
     } = this.props;
@@ -23,7 +26,7 @@ export const Pug = React.createClass({
     const joinedView = ()=> <div>
       Waiting for game to start...
     </div>;
-    const closedView = () => <p>
+    const closedView = () => gameInited ? <BoardGame /> : <p>
       You cannot join this game
     </p>;
     const openView = ({ pugName, name }) => <div>
@@ -46,6 +49,7 @@ function mapStateToProps(state, props) {
     open: !!openPug,
     pug: openPug || {},
     username: state.username,
+    gameInited: state.gameInited,
   }
 }
 

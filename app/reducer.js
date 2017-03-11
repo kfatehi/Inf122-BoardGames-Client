@@ -10,6 +10,7 @@ const initialState = {
   userProfiles: {},
   openGames: [],
   supportedGames: [],
+  gameInited: false
 };
 
 export default function(state=initialState, action) {
@@ -39,6 +40,9 @@ export default function(state=initialState, action) {
     }
     case 'SET_ALL_SUPPORTED_GAMES': {
       return { ...state, supportedGames: action.games }
+    }
+    case 'GAME_INIT': {
+      return { ...state, gameInited: true }
     }
   }
   return state;
