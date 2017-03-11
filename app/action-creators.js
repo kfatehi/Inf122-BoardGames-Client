@@ -1,3 +1,5 @@
+import { hashHistory } from 'react-router';
+
 export const connect = (url, username) => {
   return function(dispatch, getState) {
     if (! getState().connected) {
@@ -11,7 +13,13 @@ export const connect = (url, username) => {
 
         connection.onmessage = function (message) {
           try {
-            dispatch(JSON.parse(message.data));
+            let action = JSON.parse(message.data);
+            dispatch(action);
+            switch (action.type) {
+              case 'NEWLY_CREATED_GAME': {
+                hashHistory.push(`/pugs/${action.gameId}`)
+              }
+            }
           } catch (e) {
             dispatch({ type: 'CONNECTION_ERROR', error: e.stack });
           }
@@ -47,5 +55,8 @@ export const toServer = (action) => {
 };
 
 export const createGame = (gameName, pugName) => {
-  return toServer({ type: 'CREATE_GAME', gameName, pugName });
+  return function(dispatch, getState) {
+    dispatch({ type: "CREATING_PUG", gameName, pugName });
+    dispatch(toServer({ type: 'CREATE_GAME', gameName, pugName }));
+  }
 };

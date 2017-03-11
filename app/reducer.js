@@ -10,6 +10,8 @@ const initialState = {
   userProfiles: {},
   openGames: [],
   supportedGames: [],
+
+  pug: null
 };
 
 export default function(state=initialState, action) {
@@ -39,6 +41,13 @@ export default function(state=initialState, action) {
     }
     case 'SET_ALL_SUPPORTED_GAMES': {
       return { ...state, supportedGames: action.games }
+    }
+    case 'CREATING_PUG': {
+      const pug = { pugName: action.pugName, gameName: action.gameName };
+      return { ...state, pug };
+    }
+    case 'NEWLY_CREATED_GAME': {
+      return { ...state, pug: { ...state.pug, id: action.gameId } }
     }
   }
   return state;
