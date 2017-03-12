@@ -22,6 +22,7 @@ export const BoardPosition = React.createClass({
 export const BoardGameComponent = React.createClass({
   render() {
     const { 
+      username,
       boardCols,
       boardRows,
       checkered,
@@ -40,18 +41,27 @@ export const BoardGameComponent = React.createClass({
           color={checkered ? checker(i, j) : '#ccc'}
         />);
 
-    let style = {
+    let boardStyle = {
       width: boardCols * POS_SIZE,
       height: boardRows * POS_SIZE,
-      position: 'absolute'
+      position: 'relative'
     }
-    return <div style={style}>{positions}</div>;
+    return <div>
+      <div style={boardStyle}>{positions}</div>
+      <ul>
+        <li>{username}</li>
+        {opponents.map((name,i) => <li key={i}>{name}</li>)}
+      </ul>
+    </div>;
   }
 });
 
 
 function mapStateToProps(state, props) {
-  return { ...state.gameMeta }
+  return {
+    ...state.gameMeta,
+    username: state.username
+  }
 }
 
 export const BoardGame = connect(mapStateToProps, actionCreators)(BoardGameComponent); 
