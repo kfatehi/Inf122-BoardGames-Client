@@ -4,6 +4,7 @@ export const connect = (url, username) => {
   return function(dispatch, getState) {
     if (! getState().connected) {
       try {
+        let keepalive;
         const connection = new WebSocket(url);
         dispatch({ type: 'CONNECT', url, connection, username });
 
@@ -30,6 +31,8 @@ export const connect = (url, username) => {
 
         connection.onclose = function (event) {
           dispatch({ type: 'CONNECTION_CLOSED' });
+
+          clearInterval(keepalive);
         };
 
         connection.onopen = function () {
@@ -38,7 +41,7 @@ export const connect = (url, username) => {
           dispatch(toServer({ type: "GET_OPEN_GAMES" }));
           dispatch(toServer({ type: "GET_ALL_SUPPORTED_GAMES" }));
 
-          setInterval(()=> dispatch(toServer({ type: "PING" })), 10 * 1000);
+          keepalive = setInterval(()=> dispatch(toServer({ type: "PING" })), 10 * 1000);
         };
       } catch (error) {
         dispatch({ type: 'CONNECTION_ERROR', error: error.message });
