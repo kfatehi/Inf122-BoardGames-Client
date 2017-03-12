@@ -37,6 +37,10 @@ export const connect = (url, username) => {
           dispatch(toServer({ type: "GET_USER_PROFILE", username  }));
           dispatch(toServer({ type: "GET_OPEN_GAMES" }));
           dispatch(toServer({ type: "GET_ALL_SUPPORTED_GAMES" }));
+
+          setInterval(()=>{
+            dispatch(toServer({ type: "PING" }));
+          }, 10 * 1000);
         };
       } catch (error) {
         dispatch({ type: 'CONNECTION_ERROR', error: error.message });
