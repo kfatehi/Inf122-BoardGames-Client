@@ -10,14 +10,16 @@ const initialState = {
   userProfiles: {},
   openGames: [],
   supportedGames: [],
-  gameInited: false
+  gameInited: false,
+
+
 };
 
 export default function(state=initialState, action) {
   console.log('action', action);
   switch (action.type) {
     case 'CONNECT': {
-      return { ...state, connection: action.connection, connectionError: null, server: action.url, username: action.username, connected: false, connecting: true };
+      return { ...initialState, connection: action.connection, server: action.url, username: action.username, connecting: true };
     }
     case 'CONNECTION_ERROR': {
       return { ...state, connectionError: action.error }
@@ -42,7 +44,7 @@ export default function(state=initialState, action) {
       return { ...state, supportedGames: action.games }
     }
     case 'GAME_INIT': {
-      return { ...state, gameInited: true }
+      return { ...state, gameInited: true,  }
     }
   }
   return state;

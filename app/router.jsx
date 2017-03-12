@@ -11,7 +11,8 @@ import { getServer, getUsername } from './components/ConnectForm.jsx';
 
 const autoConnect = (store) => {
   const { server, username } = store.getState();
-  store.dispatch(connect(server, username));
+  if (server && username)
+    store.dispatch(connect(server, username));
 }
 
 export default (store) => <Router history={hashHistory}>
