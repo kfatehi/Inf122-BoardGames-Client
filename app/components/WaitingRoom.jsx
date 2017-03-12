@@ -6,13 +6,12 @@ export const WaitingRoomComponent = React.createClass({
   render() {
     const { id, openPug, imJoined, need, joinGame } = this.props;
     return <div>
-      { openPug ? <ul>
-        <li><h3>{openPug.pugName}</h3></li>
-        <li>{openPug.name}</li>
-        { imJoined ? <p>
-          Waiting for {need} more player{need === 1 ? '' : 's'}.
-        </p> : <button onClick={()=>joinGame(id)}>Join</button> }
-      </ul> : <p>This is not an open game. It may be full or not exist.</p> }
+      { openPug ? <div>
+        <h3>{openPug.pugName}</h3>
+        <p>{openPug.name}</p>
+        <p>Needs {need} more player{need === 1 ? '' : 's'}.</p>
+        { imJoined ? null : <button onClick={()=>joinGame(id)}>Join</button> }
+      </div> : <p>This is not an open game. It may be full or not exist.</p> }
     </div>
   }
 });
