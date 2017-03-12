@@ -11,8 +11,7 @@ const initialState = {
   openGames: [],
   supportedGames: [],
   gameInited: false,
-
-
+  gameMeta: null,
 };
 
 export default function(state=initialState, action) {
@@ -44,7 +43,14 @@ export default function(state=initialState, action) {
       return { ...state, supportedGames: action.games }
     }
     case 'GAME_INIT': {
-      return { ...state, gameInited: true,  }
+      return { ...state, gameInited: true, gameMeta: {
+        gameId: action.gameId,
+        boardCols: action.boardCols,
+        boardRows: action.boardRows,
+        checkered: action.checkered,
+        needsFlip: action.needsFlip,
+        opponents: action.opponents
+      } }
     }
   }
   return state;
