@@ -59,6 +59,7 @@ export default function(state=initialState, action) {
         diffs: action.diffs,
         turn: action.turn,
         turnType: action.turn_type,
+        myTurn: action.turn === state.username,
         userPool: action.user_pool,
         validMovements: action.valid_movements,
         validPlacements: action.valid_placements,

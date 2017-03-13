@@ -16,13 +16,21 @@ export const BoardPiece = React.createClass({
       backgroundImage: `url(${image})`,
       backgroundSize: '100%'
     };
-    return <Draggable><div style={style} /></Draggable>;
+
+    const dragOpts = {
+      position: {x: 0, y:0},
+      onStop: (e, i)=>{
+        console.log(arguments);
+      }
+    }
+
+    return <Draggable {...dragOpts}><div style={style} /></Draggable>;
   }
 });
 
 export const BoardPosition = React.createClass({
   render() {
-    const { row, col, color, piece } = this.props;
+    const { row, col, color, piece, onClick } = this.props;
     let style = {
       position: 'absolute',
       top: row * POS_SIZE,
@@ -32,7 +40,7 @@ export const BoardPosition = React.createClass({
       border: '1px solid black',
       backgroundColor: color
     };
-    return <div style={style}>
+    return <div style={style} onClick={()=>onClick(row, col)}>
       {piece ? <BoardPiece {...piece} /> : null }
     </div>
   }
@@ -50,7 +58,9 @@ export const BoardGameComponent = React.createClass({
       board,
       myTurn,
       turn,
-      turnType
+      turnType,
+
+      clickBoardPosition
     } = this.props;
 
     let checker = (row, col) => row % 2 === col % 2 ? '#CCC' : '#000';
@@ -63,6 +73,7 @@ export const BoardGameComponent = React.createClass({
           row={i} col={j}
           color={checkered ? checker(i, j) : '#ccc'}
           piece={board[i][j]}
+          onClick={clickBoardPosition}
         />);
 
     let boardStyle = {
@@ -84,11 +95,10 @@ export const BoardGameComponent = React.createClass({
 
 function mapStateToProps(state, props) {
   const gs = state.gameState;
-  console.log(gs.board);
   return {
     ...state.gameMeta,
     username: state.username,
-    myTurn: gs.turn === state.username ? true : false,
+    myTurn: gs.myTurn,
     turn: gs.turn,
     turnType: gs.turnType,
     board: gs.board
