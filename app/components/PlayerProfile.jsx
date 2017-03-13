@@ -5,7 +5,8 @@ import {List, ListItem} from 'material-ui/List';
 
 export const PlayerProfile = ({
   username,
-  games
+  games,
+  closeAction
 })=> <Card>
   <CardTitle
     title={username}
@@ -26,5 +27,6 @@ export const PlayerProfile = ({
         }
       />)}
     </List>
+    <button onClick={closeAction}>Close</button>
   </CardText>
 </Card>;

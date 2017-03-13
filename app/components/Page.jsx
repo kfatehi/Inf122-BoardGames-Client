@@ -22,12 +22,13 @@ const PageComponent = React.createClass({
       connecting,
       connected,
       connectionError,
-      userProfiles,
-      myProfile,
+      profileOpenUser,
       openGames,
       supportedGames,
       disconnect,
-      toServer
+      toServer,
+      openProfile,
+      closeProfile,
     } = this.props;
     return <div>
       <Favicon url="http://findicons.com/files/icons/1786/oxygen_refit/128/package_games_board.png" />
@@ -45,9 +46,13 @@ const PageComponent = React.createClass({
           <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
             <ClearFix style={{padding: spacing.desktopGutter, boxSizing: 'border-box'}}>
               <div id='content' style={{maxWidth: 1200, margin: '0 auto',}}>
-                { myProfile ?
-                    <PlayerProfile username={username} games={myProfile.games}/>
-                    : null
+                { profileOpenUser ?
+                  <PlayerProfile
+                    username={profileOpenUser.username}
+                    games={profileOpenUser.games}
+                    closeAction={closeProfile}
+                  />
+                  : <button onClick={()=>openProfile(username)}>My Profile</button>
                 }
                 {this.props.children}
               </div>
@@ -71,7 +76,7 @@ function mapStateToProps(state) {
     connected: state.connected,
     connectionError: state.connectionError,
     userProfiles: state.userProfiles,
-    myProfile: state.userProfiles[state.username],
+    profileOpenUser: state.profileOpenUser
   }
 }
 

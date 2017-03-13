@@ -38,7 +38,6 @@ export const connect = (url, username) => {
 
         connection.onopen = function () {
           dispatch(toServer({ type: "LOGIN", username }))
-          dispatch(toServer({ type: "GET_USER_PROFILE", username  }));
           dispatch(toServer({ type: "GET_OPEN_GAMES" }));
           dispatch(toServer({ type: "GET_ALL_SUPPORTED_GAMES" }));
 
@@ -88,4 +87,16 @@ export const clickBoardPosition = (row, col) => {
       }
     }
   }
+}
+
+export const openProfile = (username) => {
+  return function(dispatch, getState) {
+    dispatch({ type: "OPEN_USER_PROFILE", username });
+    dispatch(toServer({ type: "GET_USER_PROFILE", username }));
+  }
+}
+
+
+export const closeProfile = () => {
+  return { type: "CLOSE_USER_PROFILE" }
 }

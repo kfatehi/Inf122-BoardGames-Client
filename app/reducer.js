@@ -8,6 +8,7 @@ const initialState = {
   connected: false,
   connectionError: null,
   userProfiles: {},
+  profileOpenUser: null,
   openGames: [],
   supportedGames: [],
   gameEnded: false,
@@ -35,9 +36,14 @@ export default function(state=initialState, action) {
     case 'LOGIN_ERROR': {
       return { ...state, connectionError: action.errorMessage }
     }
+    case 'OPEN_USER_PROFILE': {
+      return { ...state, profileOpenUser: { username: action.username, games: [] } }
+    }
+    case 'CLOSE_USER_PROFILE': {
+      return { ...state, profileOpenUser: null }
+    }
     case 'SET_USER_PROFILE': {
-      const entry = { [action.username]: { games: action.games } };
-      return { ...state, userProfiles: { ...state.userProfiles, ...entry } }
+      return { ...state, profileOpenUser: { username: action.username, games: action.games } }
     }
     case 'SET_OPEN_GAMES': {
       return { ...state, openGames: action.openGames }
