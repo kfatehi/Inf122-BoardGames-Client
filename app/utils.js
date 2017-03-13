@@ -12,7 +12,7 @@ export function getImagePath(imagePath) {
   if (imagePath[0] === '/') {
     // it's a relative path. reuse the websocket host
     let url = new URL(session().getServer())
-    url.protocol = "http:";
+    url.protocol = url.protocol.replace('ws', 'http');
     url.pathname = imagePath;
     return url.toString();
   } else {
