@@ -61,6 +61,8 @@ export const BoardGameComponent = React.createClass({
       myTurn,
       turn,
       turnType,
+      gameEnded,
+      endText,
 
       clickBoardPosition
     } = this.props;
@@ -84,7 +86,10 @@ export const BoardGameComponent = React.createClass({
       position: 'relative'
     }
     return <div>
-      { myTurn ? <p>It's your turn to {turnType}</p> : <p>It's {turn}'s turn to {turnType}</p> }
+      { gameEnded ? <p>{endText}</p> : ( myTurn ? <p>
+        It's your turn to {turnType}
+      </p> : <p>It's {turn}'s turn to {turnType}</p>) }
+
       <div style={boardStyle}>{positions}</div>
       <ul>
         <li>{username}</li>
@@ -97,13 +102,23 @@ export const BoardGameComponent = React.createClass({
 
 function mapStateToProps(state, props) {
   const gs = state.gameState;
+  const whoWon = () => {
+    let w = state.gameWinner;
+    if (w && w.length > 0) {
+      return `${w} WON!`
+    } else {
+      return `It's a DRAW!`
+    }
+  }
   return {
     ...state.gameMeta,
     username: state.username,
     myTurn: gs.myTurn,
     turn: gs.turn,
     turnType: gs.turnType,
-    board: gs.board
+    board: gs.board,
+    gameEnded: state.gameEnded,
+    endText: state.gameEnded ? `The game has ended. ${whoWon()}` : null
   }
 }
 
