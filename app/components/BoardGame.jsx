@@ -72,7 +72,7 @@ export const BoardGameComponent = React.createClass({
           key={`r${i}c${j}`}
           row={i} col={j}
           color={checkered ? checker(i, j) : '#ccc'}
-          piece={board[i][j]}
+          piece={board[j][i]}
           onClick={clickBoardPosition}
         />);
 
