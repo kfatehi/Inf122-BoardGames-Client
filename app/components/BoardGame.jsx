@@ -2,6 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actionCreators from '../action-creators';
 
+import Draggable from 'react-draggable';
+
+
 const POS_SIZE = 50;
 
 export const BoardPiece = React.createClass({
@@ -10,8 +13,10 @@ export const BoardPiece = React.createClass({
     let style = {
       width: '100%',
       height: '100%',
+      backgroundImage: `url(${image})`,
+      backgroundSize: '100%'
     };
-    return <img style={style} src={image} />;
+    return <Draggable><div style={style} /></Draggable>;
   }
 });
 
