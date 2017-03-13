@@ -4,6 +4,7 @@ import * as actionCreators from '../action-creators';
 import { ConnectForm } from './ConnectForm.jsx';
 import { PlayerProfile } from './PlayerProfile.jsx';
 import { Link } from 'react-router';
+import Favicon from 'react-favicon'
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -26,6 +27,7 @@ const PageComponent = React.createClass({
     } = this.props;
     const disconnectLink = () => <a href="#" onClick={disconnect}>Disconnect</a>
     return <div>
+      <Favicon url="http://findicons.com/files/icons/1786/oxygen_refit/128/package_games_board.png" />
       { !connected && !connecting ? <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
           <ConnectForm />
         </MuiThemeProvider> : null}
