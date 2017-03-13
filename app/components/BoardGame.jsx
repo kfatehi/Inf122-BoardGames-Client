@@ -13,6 +13,7 @@ export const BoardPosition = React.createClass({
       left: col * POS_SIZE,
       height: POS_SIZE,
       width: POS_SIZE,
+      border: '1px solid black',
       backgroundColor: color
     };
     return <div style={style}></div>
