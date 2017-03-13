@@ -23,9 +23,11 @@ export const Connect = React.createClass({
   render() {
     const actions = [
       <FlatButton
+        type="submit"
         label="Connect"
         primary={true}
         keyboardFocused={true}
+        className="button-submit"
         onTouchTap={this.connect}
       />,
     ];
@@ -36,8 +38,8 @@ export const Connect = React.createClass({
       <div>
         <Dialog
           title="Connect To Server"
-          actions={actions}
           modal={true}
+          actions={actions}
           open={this.state.open}
           contentStyle={dialogWidth}
           onRequestClose={this.handleClose}
@@ -46,6 +48,7 @@ export const Connect = React.createClass({
             Error: {this.state.connectionError} {' '}
             <a href="http://stackoverflow.com/a/31003057/511621">Why is this error vague?</a>
           </div> : null}
+          <form onSubmit={this.connect}>
           <TextField
             floatingLabelText="Server Address"
             hintText="ws://server.name/path"
@@ -60,6 +63,8 @@ export const Connect = React.createClass({
             onChange={(e)=>this.setState({ username: e.target.value})}
             fullWidth={true}
           /><br />
+          <button type="submit" style={{display: 'none'}}/>
+        </form>
         </Dialog>
     </div>
     );
