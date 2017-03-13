@@ -2,11 +2,35 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actionCreators from '../action-creators';
 
+import Draggable from 'react-draggable';
+
+
 const POS_SIZE = 50;
+
+export const BoardPiece = React.createClass({
+  render() {
+    const { image, owner, pieceId } = this.props;
+    let style = {
+      width: '100%',
+      height: '100%',
+      backgroundImage: `url(${image})`,
+      backgroundSize: '100%'
+    };
+
+    const dragOpts = {
+      position: {x: 0, y:0},
+      onStop: (e, i)=>{
+        console.log(arguments);
+      }
+    }
+
+    return <Draggable {...dragOpts}><div style={style} /></Draggable>;
+  }
+});
 
 export const BoardPosition = React.createClass({
   render() {
-    const { row, col, color } = this.props;
+    const { row, col, color, piece, onClick } = this.props;
     let style = {
       position: 'absolute',
       top: row * POS_SIZE,
@@ -16,7 +40,9 @@ export const BoardPosition = React.createClass({
       border: '1px solid black',
       backgroundColor: color
     };
-    return <div style={style}></div>
+    return <div style={style} onClick={()=>onClick(row, col)}>
+      {piece ? <BoardPiece {...piece} /> : null }
+    </div>
   }
 });
 
@@ -28,7 +54,13 @@ export const BoardGameComponent = React.createClass({
       boardRows,
       checkered,
       needsFlip,
-      opponents
+      opponents,
+      board,
+      myTurn,
+      turn,
+      turnType,
+
+      clickBoardPosition
     } = this.props;
 
     let checker = (row, col) => row % 2 === col % 2 ? '#CCC' : '#000';
@@ -40,6 +72,8 @@ export const BoardGameComponent = React.createClass({
           key={`r${i}c${j}`}
           row={i} col={j}
           color={checkered ? checker(i, j) : '#ccc'}
+          piece={board[j][i]}
+          onClick={clickBoardPosition}
         />);
 
     let boardStyle = {
@@ -48,6 +82,7 @@ export const BoardGameComponent = React.createClass({
       position: 'relative'
     }
     return <div>
+      { myTurn ? <p>It's your turn to {turnType}</p> : <p>It's {turn}'s turn to {turnType}</p> }
       <div style={boardStyle}>{positions}</div>
       <ul>
         <li>{username}</li>
@@ -59,9 +94,14 @@ export const BoardGameComponent = React.createClass({
 
 
 function mapStateToProps(state, props) {
+  const gs = state.gameState;
   return {
     ...state.gameMeta,
-    username: state.username
+    username: state.username,
+    myTurn: gs.myTurn,
+    turn: gs.turn,
+    turnType: gs.turnType,
+    board: gs.board
   }
 }
 

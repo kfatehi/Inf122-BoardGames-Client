@@ -12,6 +12,7 @@ const initialState = {
   supportedGames: [],
   gameInited: false,
   gameMeta: null,
+  gameState: {},
 };
 
 export default function(state=initialState, action) {
@@ -50,6 +51,18 @@ export default function(state=initialState, action) {
         checkered: action.checkered,
         needsFlip: action.needsFlip,
         opponents: action.opponents
+      } }
+    }
+    case 'SET_GAME_STATE': {
+      return { ...state, gameState: {
+        board: action.board,
+        diffs: action.diffs,
+        turn: action.turn,
+        turnType: action.turn_type,
+        myTurn: action.turn === state.username,
+        userPool: action.user_pool,
+        validMovements: action.valid_movements,
+        validPlacements: action.valid_placements,
       } }
     }
   }

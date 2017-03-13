@@ -72,3 +72,19 @@ export const createGame = (gameName, pugName) => {
 export const joinGame = (gameId) => {
   return toServer({ type: "JOIN_GAME", gameId });
 }
+
+export const clickBoardPosition = (row, col) => {
+  return function(dispatch, getState) {
+    const { myTurn, turnType, userPool, validPlacements } = getState().gameState;
+    if ( myTurn && turnType === 'place' ) {
+      const piece = userPool[0];
+      const isValid = piece && validPlacements.reduce((acc, {c,r})=>{
+        if (acc) return acc;
+        return c == col && row === r;
+      }, false);
+      if (isValid) {
+        dispatch(toServer({ type: 'TURN', c: col, r: row, pieceID: piece.id }));
+      }
+    }
+  }
+}
