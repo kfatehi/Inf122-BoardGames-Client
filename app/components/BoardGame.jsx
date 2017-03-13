@@ -4,6 +4,8 @@ import * as actionCreators from '../action-creators';
 
 import Draggable from 'react-draggable';
 
+import { getImagePath } from '../utils';
+
 
 const POS_SIZE = 50;
 
@@ -13,7 +15,7 @@ export const BoardPiece = React.createClass({
     let style = {
       width: '100%',
       height: '100%',
-      backgroundImage: `url(${image})`,
+      backgroundImage: `url(${getImagePath(image)})`,
       backgroundSize: '100%'
     };
 

@@ -4,6 +4,7 @@ import * as actionCreators from '../action-creators';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
+import { session } from '../utils';
 
 export const Connect = React.createClass({
   getInitialState() {
@@ -74,8 +75,8 @@ export const Connect = React.createClass({
     const serverURL = this.state.server;
     const username = this.state.username;
 
-    sessionStorage.setItem("PROXY_TARGET", serverURL);
-    sessionStorage.setItem("USERNAME", username);
+    session().setServer(serverURL);
+    session().setUsername(username);
 
     this.props.connect(serverURL, username);
   }

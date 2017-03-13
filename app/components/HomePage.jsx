@@ -5,6 +5,8 @@ import { Link } from 'react-router';
 
 import { Page } from './Page.jsx';
 
+import { getImagePath } from '../utils';
+
 export const Home = React.createClass({
   render() {
     const {
@@ -13,7 +15,7 @@ export const Home = React.createClass({
     return <Page>
       {openGames.map((g,i)=><div key={i}>
         <Link to={`/pugs/${g.id}`}>
-          <img src={g.image} alt={g.pugName} className="game-thumbnail"/>
+          <img src={getImagePath(g.image)} alt={g.pugName} className="game-thumbnail"/>
           <span>{g.pugName} ({g.name})</span>
         </Link>
 

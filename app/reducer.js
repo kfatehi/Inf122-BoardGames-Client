@@ -1,8 +1,8 @@
-const DEFAULT_SERVER = "ws://localhost:4567/games";
+import { session } from './utils';
 
 const initialState = {
-  server: sessionStorage.getItem("PROXY_TARGET") || DEFAULT_SERVER ,
-  username: sessionStorage.getItem("USERNAME") || '',
+  server: session().getServer(),
+  username: session().getUsername(),
   connection: null,
   connecting: false,
   connected: false,

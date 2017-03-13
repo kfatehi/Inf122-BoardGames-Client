@@ -5,6 +5,8 @@ import { Link } from 'react-router';
 
 import { Page } from './Page.jsx';
 
+import { getImagePath } from '../utils';
+
 export const NewPug = React.createClass({
   getInitialState() {
     return { gameName: null, pugName: '' };
@@ -34,7 +36,7 @@ export const NewPug = React.createClass({
           e.preventDefault();
           this.setState({ gameName: name });
         }}>
-          <img src={image} alt={name} className="game-thumbnail"/>
+          <img src={getImagePath(image)} alt={name} className="game-thumbnail"/>
           <span>{name}</span>
         </a>
       </div>)
