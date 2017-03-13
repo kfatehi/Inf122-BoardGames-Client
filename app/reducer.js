@@ -10,6 +10,8 @@ const initialState = {
   userProfiles: {},
   openGames: [],
   supportedGames: [],
+  gameEnded: false,
+  gameWinner: null,
   gameInited: false,
   gameMeta: null,
   gameState: {},
@@ -44,7 +46,7 @@ export default function(state=initialState, action) {
       return { ...state, supportedGames: action.games }
     }
     case 'GAME_INIT': {
-      return { ...state, gameInited: true, gameMeta: {
+      return { ...state, gameWinner: null, gameEnded: false, gameInited: true, gameMeta: {
         gameId: action.gameId,
         boardCols: action.boardCols,
         boardRows: action.boardRows,
@@ -64,6 +66,9 @@ export default function(state=initialState, action) {
         validMovements: action.valid_movements,
         validPlacements: action.valid_placements,
       } }
+    }
+    case 'GAME_END': {
+      return { ...state, gameWinner: action.winner, gameEnded: true }
     }
   }
   return state;

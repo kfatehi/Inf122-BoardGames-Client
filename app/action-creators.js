@@ -25,6 +25,7 @@ export const connect = (url, username) => {
               }
             }
           } catch (e) {
+            console.error(e.stack);
             dispatch({ type: 'CONNECTION_ERROR', error: e.stack });
           }
         };
