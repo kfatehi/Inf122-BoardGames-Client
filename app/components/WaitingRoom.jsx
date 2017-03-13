@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import * as actionCreators from '../action-creators';
 
@@ -11,7 +12,10 @@ export const WaitingRoomComponent = React.createClass({
         <p>{openPug.name}</p>
         <p>Needs {need} more player{need === 1 ? '' : 's'}.</p>
         { imJoined ? null : <button onClick={()=>joinGame(id)}>Join</button> }
-      </div> : <p>This is not an open game. It may be full or not exist.</p> }
+      </div> : <div>
+      <p>This is not an open game. It may be full or not exist.</p>
+      <p><Link to="/">Click here to go back home</Link></p>
+    </div> }
     </div>
   }
 });
