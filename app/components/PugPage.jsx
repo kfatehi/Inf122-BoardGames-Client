@@ -19,7 +19,7 @@ export const Pug = React.createClass({
 
 
 function mapStateToProps(state, props) {
-  return { init: state.gameInited }
+  return { init: state.gameActive }
 }
 
 export const PugPage = connect(mapStateToProps, actionCreators)(Pug); 

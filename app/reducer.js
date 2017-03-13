@@ -12,7 +12,7 @@ const initialState = {
   supportedGames: [],
   gameEnded: false,
   gameWinner: null,
-  gameInited: false,
+  gameActive: false,
   gameMeta: null,
   gameState: {},
 };
@@ -46,7 +46,7 @@ export default function(state=initialState, action) {
       return { ...state, supportedGames: action.games }
     }
     case 'GAME_INIT': {
-      return { ...state, gameWinner: null, gameEnded: false, gameInited: true, gameMeta: {
+      return { ...state, gameWinner: null, gameEnded: false, gameActive: false, gameMeta: {
         gameId: action.gameId,
         boardCols: action.boardCols,
         boardRows: action.boardRows,
@@ -56,7 +56,7 @@ export default function(state=initialState, action) {
       } }
     }
     case 'SET_GAME_STATE': {
-      return { ...state, gameState: {
+      return { ...state, gameActive: true, gameState: {
         board: action.board,
         diffs: action.diffs,
         turn: action.turn,

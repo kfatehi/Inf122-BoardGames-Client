@@ -94,16 +94,7 @@ export const BoardGameComponent = React.createClass({
 
 
 function mapStateToProps(state, props) {
-  const gs = state.gameState || {
-    board: [],
-    diffs: [],
-    turn: '',
-    turnType: '',
-    myTurn: false,
-    userPool: [],
-    validMovements: [],
-    validPlacements: []
-  };
+  const gs = state.gameState;
   return {
     ...state.gameMeta,
     username: state.username,
