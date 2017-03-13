@@ -4,7 +4,6 @@ import * as actionCreators from '../action-creators';
 import { ConnectForm } from './ConnectForm.jsx';
 import { PlayerProfile } from './PlayerProfile.jsx';
 import { Link } from 'react-router';
-import FullWidth from './FullWidth.jsx';
 import Favicon from 'react-favicon';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -43,7 +42,7 @@ const PageComponent = React.createClass({
               iconElementRight={<FlatButton label="Disconnect" onTouchTap={disconnect}/>}
             />
           </MuiThemeProvider>
-          <MuiThemeProvider>
+          <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
             <ClearFix style={{padding: spacing.desktopGutter, boxSizing: 'border-box'}}>
               <div id='content' style={{maxWidth: 1200, margin: '0 auto',}}>
                 { myProfile ?
