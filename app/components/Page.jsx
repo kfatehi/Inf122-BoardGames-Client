@@ -4,6 +4,10 @@ import * as actionCreators from '../action-creators';
 import { ConnectForm } from './ConnectForm.jsx';
 import { PlayerProfile } from './PlayerProfile.jsx';
 import { Link } from 'react-router';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import AppBar from 'material-ui/AppBar';
 
 const PageComponent = React.createClass({
   render: function () {
@@ -17,27 +21,32 @@ const PageComponent = React.createClass({
       myProfile,
       openGames,
       supportedGames,
-
       disconnect,
       toServer
     } = this.props;
-    const whyShitError = () => <a href="http://stackoverflow.com/a/31003057/511621">Why is this error vague?</a>;
     const disconnectLink = () => <a href="#" onClick={disconnect}>Disconnect</a>
     return <div>
-      { connectionError ? <div>Error: {connectionError} {whyShitError()}</div> : null}
-      { connected ? <div>Connected {username}@{server} {disconnectLink()}</div> : null}
-      { !connected && !connecting ? <ConnectForm /> : null}
+      { !connected && !connecting ? <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+          <ConnectForm />
+        </MuiThemeProvider> : null}
 
       { connected ? <div>
+          <MuiThemeProvider>
+            <AppBar
+              title="Bored Games - INF122 Final Project "
+              iconClassNameRight="muidocs-icon-navigation-expand-more"
+            />
+          </MuiThemeProvider>
 
-        { myProfile ? 
-            <PlayerProfile username={username} games={myProfile.games}/>
-            : null
-        }
-
-        {this.props.children}
-
-      </div> : null }
+          <div id='content'>
+            Connected {username}@{server} {disconnectLink()}
+            { myProfile ?
+                <PlayerProfile username={username} games={myProfile.games}/>
+                : null
+            }
+            {this.props.children}
+          </div>
+        </div> : null}
     </div>
   }
 })
