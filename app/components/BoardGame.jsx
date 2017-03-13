@@ -4,9 +4,20 @@ import * as actionCreators from '../action-creators';
 
 const POS_SIZE = 50;
 
+export const BoardPiece = React.createClass({
+  render() {
+    const { image, owner, pieceId } = this.props;
+    let style = {
+      width: '100%',
+      height: '100%',
+    };
+    return <img style={style} src={image} />;
+  }
+});
+
 export const BoardPosition = React.createClass({
   render() {
-    const { row, col, color } = this.props;
+    const { row, col, color, piece } = this.props;
     let style = {
       position: 'absolute',
       top: row * POS_SIZE,
@@ -16,7 +27,9 @@ export const BoardPosition = React.createClass({
       border: '1px solid black',
       backgroundColor: color
     };
-    return <div style={style}></div>
+    return <div style={style}>
+      {piece ? <BoardPiece {...piece} /> : null }
+    </div>
   }
 });
 
@@ -28,7 +41,11 @@ export const BoardGameComponent = React.createClass({
       boardRows,
       checkered,
       needsFlip,
-      opponents
+      opponents,
+      board,
+      myTurn,
+      turn,
+      turnType
     } = this.props;
 
     let checker = (row, col) => row % 2 === col % 2 ? '#CCC' : '#000';
@@ -40,6 +57,7 @@ export const BoardGameComponent = React.createClass({
           key={`r${i}c${j}`}
           row={i} col={j}
           color={checkered ? checker(i, j) : '#ccc'}
+          piece={board[i][j]}
         />);
 
     let boardStyle = {
@@ -48,6 +66,7 @@ export const BoardGameComponent = React.createClass({
       position: 'relative'
     }
     return <div>
+      { myTurn ? <p>It's your turn to {turnType}</p> : <p>It's {turn}'s turn to {turnType}</p> }
       <div style={boardStyle}>{positions}</div>
       <ul>
         <li>{username}</li>
@@ -59,9 +78,15 @@ export const BoardGameComponent = React.createClass({
 
 
 function mapStateToProps(state, props) {
+  const gs = state.gameState;
+  console.log(gs.board);
   return {
     ...state.gameMeta,
-    username: state.username
+    username: state.username,
+    myTurn: gs.turn === state.username ? true : false,
+    turn: gs.turn,
+    turnType: gs.turnType,
+    board: gs.board
   }
 }
 
