@@ -1,30 +1,68 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as actionCreators from '../action-creators';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
 
 export const Connect = React.createClass({
   getInitialState() {
     return {
       server: this.props.server,
-      username: this.props.username
+      username: this.props.username,
+      connectionError: this.props.connectionError,
+      open: true
     };
   },
+  handleOpen() {
+      this.setState({open: true});
+  },
+  handleClose() {
+      this.setState({open: false});
+  },
   render() {
-    return <form>
-      <input
-        type="text"
-        value={this.state.server}
-        placeholder="ws://server.name/path"
-        onChange={(e)=>this.setState({ server: e.target.value})}
-      />
-      <input
-        type="text"
-        value={this.state.username}
-        placeholder="username"
-        onChange={(e)=>this.setState({ username: e.target.value})}
-      />
-      <button onClick={this.connect}>Connect</button>
-    </form>
+    const actions = [
+      <FlatButton
+        label="Connect"
+        primary={true}
+        keyboardFocused={true}
+        onTouchTap={this.connect}
+      />,
+    ];
+    const dialogWidth = {
+      width: '50%',
+    };
+    return (
+      <div>
+        <Dialog
+          title="Connect To Server"
+          actions={actions}
+          modal={true}
+          open={this.state.open}
+          contentStyle={dialogWidth}
+          onRequestClose={this.handleClose}
+        >
+          {this.state.connectionError ? <div style={{color: 'red', fontWeight: 'bolder'}}>
+            Error: {this.state.connectionError} {' '}
+            <a href="http://stackoverflow.com/a/31003057/511621">Why is this error vague?</a>
+          </div> : null}
+          <TextField
+            floatingLabelText="Server Address"
+            hintText="ws://server.name/path"
+            value={this.state.server}
+            onChange={(e)=>this.setState({ server: e.target.value})}
+            fullWidth={true}
+          /><br />
+          <TextField
+            floatingLabelText="Username"
+            hintText="unique username"
+            value={this.state.username}
+            onChange={(e)=>this.setState({ username: e.target.value})}
+            fullWidth={true}
+          /><br />
+        </Dialog>
+    </div>
+    );
   },
   connect(e) {
     e.preventDefault();
@@ -42,8 +80,9 @@ export const Connect = React.createClass({
 function mapStateToProps(state) {
   return {
     server: state.server,
-    username: state.username
+    username: state.username,
+    connectionError: state.connectionError
   }
 }
 
-export const ConnectForm = connect(mapStateToProps, actionCreators)(Connect); 
+export const ConnectForm = connect(mapStateToProps, actionCreators)(Connect);
