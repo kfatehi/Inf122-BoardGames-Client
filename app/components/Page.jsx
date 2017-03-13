@@ -54,7 +54,7 @@ const PageComponent = React.createClass({
             </ClearFix>
           </MuiThemeProvider>
           <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-            <Paper style={{bottom: 0, position: 'absolute'}}>
+            <Paper style={{bottom: 0, position: 'fixed'}}>
               Connected {username}@{server}
             </Paper>
           </MuiThemeProvider>
