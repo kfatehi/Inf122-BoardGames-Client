@@ -4,7 +4,7 @@ import * as actionCreators from '../action-creators';
 import { ConnectForm } from './ConnectForm.jsx';
 import { PlayerProfile } from './PlayerProfile.jsx';
 import { Link } from 'react-router';
-import Favicon from 'react-favicon'
+import Favicon from 'react-favicon';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
