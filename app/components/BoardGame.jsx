@@ -9,7 +9,7 @@ import { isValidMovement } from '../utils';
 
 export const BoardGameComponent = React.createClass({
   render() {
-    const { 
+    const {
       username,
       boardCols,
       boardRows,
@@ -38,7 +38,7 @@ export const BoardGameComponent = React.createClass({
 
     let piece, posStyle;
 
-    for (var r = 0; r < boardRows; r++) { 
+    for (var r = 0; r < boardRows; r++) {
       for (var c = 0; c < boardCols; c++) {
         posStyle =  {
           bottom: r * posSize,
@@ -87,7 +87,7 @@ export const BoardGameComponent = React.createClass({
         It's your turn to {turnType}
       </p> : <p>It's {turn}'s turn to {turnType}</p>) }
 
-      <div style={boardStyle}>
+      <div style={boardStyle} className='noSelect'>
         {positions}
         {pieces}
       </div>
@@ -129,4 +129,4 @@ function mapStateToProps(state, props) {
   }
 }
 
-export const BoardGame = connect(mapStateToProps, actionCreators)(BoardGameComponent); 
+export const BoardGame = connect(mapStateToProps, actionCreators)(BoardGameComponent);
