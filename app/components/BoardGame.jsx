@@ -119,7 +119,7 @@ function mapStateToProps(state, props) {
     const clientSizePx = Math.min(innerHeight, innerWidth)
     const margin = clientSizePx / 3;
     const posSizePx = Math.floor((clientSizePx - margin) / boardSize);
-    return 50 // posSizePx
+    return posSizePx;
   }
   return {
     ...state.gameMeta,
