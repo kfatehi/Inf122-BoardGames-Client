@@ -5,7 +5,7 @@ import * as actionCreators from '../action-creators';
 import { BoardPosition } from './BoardPosition.jsx';
 import { BoardPiece } from './BoardPiece.jsx';
 
-import { isValidMovement } from '../utils';
+import { coordToPiecePos, isValidMovement } from '../utils';
 
 export const BoardGameComponent = React.createClass({
   render() {
@@ -25,11 +25,16 @@ export const BoardGameComponent = React.createClass({
       posSize,
       validMovements,
       dragPieceId,
+      boardSize,
 
       clickBoardPosition,
       dragStart,
       dragStop
     } = this.props;
+
+    const validDrag = pieceId => ({row, col}) => {
+      return isValidMovement(validMovements, pieceId, row, col)
+    }
 
     let checker = (row, col) => row % 2 === col % 2 ? '#CCC' : '#666';
 
@@ -58,18 +63,17 @@ export const BoardGameComponent = React.createClass({
         />);
         if (piece) {
           pieces.push(<BoardPiece
-            id={piece.pieceId}
-            style={posStyle}
+            boardSize={boardSize}
+            row={r} col={c} id={piece.pieceId}
             key={piece.pieceId}
             image={piece.image}
             pieceId={piece.pieceId}
             owner={piece.owner}
-            row={r} col={c}
             size={posSize}
             dragStart={dragStart}
             dragStop={dragStop}
-            position={{ x: 0, y: 0 }}
-            disabled={!(myTurn && turnType === "move")}
+            disabled={(piece.owner !== username) || !(myTurn && turnType === "move")}
+            validDrag={validDrag(piece.pieceId)}
             bounds={'parent'}
           />)
         }
@@ -111,9 +115,12 @@ function mapStateToProps(state, props) {
     }
   }
   const boardSize = gs.board.length;
-  const clientSizePx = Math.min(innerHeight, innerWidth)
-  const margin = clientSizePx / 3;
-  const posSizePx = Math.floor((clientSizePx - margin) / boardSize);
+  const selectPieceSize = () => {
+    const clientSizePx = Math.min(innerHeight, innerWidth)
+    const margin = clientSizePx / 3;
+    const posSizePx = Math.floor((clientSizePx - margin) / boardSize);
+    return 50 // posSizePx
+  }
   return {
     ...state.gameMeta,
     username: state.username,
@@ -123,9 +130,10 @@ function mapStateToProps(state, props) {
     board: gs.board,
     gameEnded: state.gameEnded,
     endText: state.gameEnded ? `The game has ended. ${whoWon()}` : null,
-    posSize: posSizePx,
+    posSize: selectPieceSize(),
     validMovements: gs.validMovements,
-    dragPieceId: gs.dragPieceId
+    dragPieceId: gs.dragPieceId,
+    boardSize,
   }
 }
 

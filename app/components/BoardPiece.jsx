@@ -1,30 +1,36 @@
 import React from 'react';
-import { getImagePath } from '../utils';
+import { piecePosToCoord, getImagePath } from '../utils';
 import Draggable from 'react-draggable';
-
-const piecePosToCoord = (size, x, y, row, col) => {
-  let newRow = Math.round(row + (y / (-size)));
-  let newCol = Math.round(col + (x / (size)));
-  console.log(newRow, newCol);
-  return { col: newCol, row: newRow };
-}
 
 export const BoardPiece = React.createClass({
   defaultStyle: function() {
     return {
-      ...this.props.style,
       backgroundImage: `url(${getImagePath(this.props.image)})`,
       backgroundSize: '100%',
+      height: this.props.size,
+      width: this.props.size,
       position: 'absolute',
       zIndex: 5
     }
   },
   getInitialState() {
-    return { style: this.defaultStyle() }
+    return {
+      style: this.defaultStyle(),
+      position: this.calcPosition(this.props)
+    }
+  },
+  calcPosition({ row, col, size, boardSize }) {
+    return {
+      x: col * size,
+      y: - ( (row + 1) * size ) + ( boardSize * size )
+    }
+  },
+  componentWillReceiveProps(nextProps) {
+    this.setState({ position: this.calcPosition(nextProps) });
   },
   render() {
-    const { style } = this.state;
-    const { id, size, bounds, position, row, col, dragStart, dragStop, disabled } = this.props;
+    const { style, position } = this.state;
+    const { id, size, bounds, row, col, dragStart, dragStop, disabled, validDrag } = this.props;
     const grid = [size, size];
 
     const dragStyle = { ...style, zIndex: 6 }
@@ -32,15 +38,23 @@ export const BoardPiece = React.createClass({
     const dragOpts = {
       bounds,
       grid,
-      position,
+      position: this.state.position,
       disabled,
       onStart: (e, {x, y}) => {
-        this.setState({ style: dragStyle });
+        this.setState({ style: dragStyle, prevPosition: { x, y } });
         dragStart(id);
       },
-      onStop: (e, {x, y})=>{
+      onStop: ()=>{
         this.setState({ style });
-        dragStop(id, piecePosToCoord(size, x, y, row, col));
+        const { x , y } = this.state.position;
+        const attempt = piecePosToCoord(size, x, y, row, col, this.props.boardSize)
+        dragStop(id, attempt);
+        if (!validDrag(attempt)) {
+          this.setState({ position: this.state.prevPosition });
+        }
+      },
+      onDrag: (e, {x, y}) => {
+        this.setState({ position: { x, y } });
       }
     }
 

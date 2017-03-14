@@ -14,9 +14,9 @@ export const BoardPosition = React.createClass({
       backgroundColor: "red",
       opacity: 0.5
     }
+    const coords = ()=> this.props.debug ? <span>({col}, {row})</span> : null;
     return <div style={style} onClick={()=>onClick(row, col)}>
-      { this.props.highlight ? <div style={highlightStyle} /> : null }
-      { this.props.debug ? <span>({col}, {row})</span> : null }
+      { this.props.highlight ? <div style={highlightStyle}>{coords()}</div> : coords() }
     </div>;
   }
 });
