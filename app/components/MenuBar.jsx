@@ -5,6 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 export const MenuBar = ({
   toggle,
+  disconnect,
   open
 })=> <div>
   <Drawer
@@ -14,7 +15,7 @@ export const MenuBar = ({
     onRequestChange={toggle}
   >
     <MenuItem onTouchTap={toggle}>Profile</MenuItem>
-    <MenuItem onTouchTap={toggle}>Close Menu</MenuItem>
+    <MenuItem onTouchTap={disconnect}>Disconnect</MenuItem>
   </Drawer>
 </div>;
 

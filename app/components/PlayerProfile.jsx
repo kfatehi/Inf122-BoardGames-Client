@@ -9,16 +9,15 @@ export const PlayerProfile = ({
   open,
   profile,
 })=> <Dialog
-    title="Player Profile"
-    modal={true}
+    modal={false}
     actions={[<FlatButton label="Close" onTouchTap={closeAction} primary={true}/>]}
     open={open}
     onRequestClose={closeAction}
   >{ open ?
     <span>
-    <CardHeader
-      title={profile.username}
-      avatar="../../player.png"
+    <CardTitle
+      title={"Player Profile: " + profile.username}
+      subtitle="Win-Tie-Loss"
       style={{padding: "16px 16px 0 16px"}}
     />
     <CardText style={{padding: "0 16px 16px 16px"}}>

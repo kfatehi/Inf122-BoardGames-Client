@@ -11,6 +11,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
+import ActionAccountBox from 'material-ui/svg-icons/action/account-box';
 import Paper from 'material-ui/Paper';
 import ClearFix from 'material-ui/internal/ClearFix';
 import spacing from 'material-ui/styles/spacing';
@@ -43,7 +45,13 @@ const PageComponent = React.createClass({
           <MuiThemeProvider>
             <AppBar
               title="Bored Games - INF122 Final Project "
-              iconElementRight={<FlatButton label="Disconnect" onTouchTap={disconnect}/>}
+              iconElementRight={<IconButton
+                  onTouchTap={()=>openProfile(username)}
+                  tooltip="Your Player Profile"
+                  tooltipPosition="bottom-left"
+                ><ActionAccountBox />
+                  Kyle
+                </IconButton>}
               onLeftIconButtonTouchTap={toggleMenuBar}
             />
           </MuiThemeProvider>
@@ -51,6 +59,7 @@ const PageComponent = React.createClass({
           <MenuBar
             open={menuBarOpen}
             toggle={toggleMenuBar}
+            disconnect={disconnect}
           />
           </MuiThemeProvider>
           <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
@@ -61,7 +70,6 @@ const PageComponent = React.createClass({
                     open={!!profileOpenUser}
                     profile={profileOpenUser}
                   />
-                 <button onClick={()=>openProfile(username)}>My Profile</button>
                 {this.props.children}
               </div>
             </ClearFix>
