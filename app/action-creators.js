@@ -1,5 +1,7 @@
 import { hashHistory } from 'react-router';
 
+import { isValidMovement } from './utils';
+
 export const connect = (url, username) => {
   return function(dispatch, getState) {
     if (! getState().connected) {
@@ -74,6 +76,7 @@ export const joinGame = (gameId) => {
 }
 
 export const clickBoardPosition = (row, col) => {
+  console.log('placement', row, col);
   return function(dispatch, getState) {
     const { myTurn, turnType, userPool, validPlacements } = getState().gameState;
     if ( myTurn && turnType === 'place' ) {
@@ -102,4 +105,22 @@ export const closeProfile = () => {
 
 export const toggleMenuBar = () => {
   return { type: "TOGGLE_MENUBAR" }
+}
+
+export const dragStart = (pieceId) => {
+  return function(dispatch, getState) {
+    dispatch({ type: "DRAG_START", id: pieceId });
+  }
+}
+
+export const dragStop = (pieceID, { row, col }) => {
+  console.log('dragstop', pieceID, row, col);
+  return function(dispatch, getState) {
+    dispatch({ type: "DRAG_STOP" });
+    const { validMovements } = getState().gameState;
+    if (isValidMovement(validMovements, pieceID, row, col)) {
+      console.log('valid, doing turn', pieceID, col, row);
+      dispatch(toServer({ type: 'TURN', pieceID, c: col, r: row }));
+    }
+  }
 }
