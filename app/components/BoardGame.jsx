@@ -35,7 +35,7 @@ export const BoardPosition = React.createClass({
     const { row, col, color, piece, onClick } = this.props;
     let style = {
       position: 'absolute',
-      top: row * POS_SIZE,
+      bottom: row * POS_SIZE,
       left: col * POS_SIZE,
       height: POS_SIZE,
       width: POS_SIZE,
@@ -67,7 +67,7 @@ export const BoardGameComponent = React.createClass({
       clickBoardPosition
     } = this.props;
 
-    let checker = (row, col) => row % 2 === col % 2 ? '#CCC' : '#000';
+    let checker = (row, col) => row % 2 === col % 2 ? '#CCC' : '#666';
 
     let positions = [];
     for (var i = 0; i < boardRows; i++)
