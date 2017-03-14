@@ -10,19 +10,32 @@ import { getImagePath } from '../utils';
 const POS_SIZE = 50;
 
 export const BoardPiece = React.createClass({
-  render() {
-    const { image, owner, pieceId } = this.props;
-    let style = {
+  defaultStyle: function() {
+    return {
       width: '100%',
       height: '100%',
-      backgroundImage: `url(${getImagePath(image)})`,
-      backgroundSize: '100%'
-    };
+      backgroundImage: `url(${getImagePath(this.props.image)})`,
+      backgroundSize: '100%',
+      position: 'absolute',
+      zIndex: 5
+    }
+  },
+  getInitialState() {
+    return { style: this.defaultStyle() }
+  },
+  render() {
+    const { style } = this.state;
+
+    const dragStyle = { ...style, zIndex: 6 }
 
     const dragOpts = {
       position: {x: 0, y:0},
-      onStop: (e, i)=>{
-        console.log(arguments);
+      grid: [POS_SIZE, POS_SIZE],
+      onStart: () => {
+        this.setState({ style: dragStyle });
+      },
+      onStop: ()=>{
+        this.setState({ style });
       }
     }
 
