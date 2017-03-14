@@ -6,6 +6,15 @@ import Draggable from 'react-draggable';
 
 import { getImagePath } from '../utils';
 
+const piecePosToCoord = (size, x, y, row, col) => {
+
+  let newRow = row + (y / (-size));
+  let newCol = col + (x / (size));
+
+  return { col: newCol, row: newRow };
+
+}
+
 export const BoardPiece = React.createClass({
   defaultStyle: function() {
     return {
@@ -21,7 +30,7 @@ export const BoardPiece = React.createClass({
   },
   render() {
     const { style } = this.state;
-    const { size, bounds, position } = this.props;
+    const { size, bounds, position, row, col } = this.props;
     const grid = [size, size];
 
     const dragStyle = { ...style, zIndex: 6 }
@@ -31,15 +40,16 @@ export const BoardPiece = React.createClass({
       grid,
       position,
       onStart: (e, {x, y}) => {
-        console.log('start', x, y);
+        //console.log('start', x, y);
         this.setState({ style: dragStyle });
       },
       onStop: (e, {x, y})=>{
-        console.log('stop', x, y);
+        //console.log('stop', x, y);
         this.setState({ style });
       },
       onDrag: (e, {x, y})=>{
-        console.log('drag', x, y);
+        const pos = piecePosToCoord(size, x, y, row, col);
+        console.log('move to position', pos.col, pos.row);
       }
     }
 
@@ -56,7 +66,9 @@ export const BoardPosition = React.createClass({
       border: '1px solid black',
       backgroundColor: color
     };
-    return <div style={style} onClick={()=>onClick(row, col)} />;
+    return <div style={style} onClick={()=>onClick(row, col)}>
+      { this.props.debug ? <span>({col}, {row})</span> : null }
+    </div>;
   }
 });
 
@@ -102,6 +114,7 @@ export const BoardGameComponent = React.createClass({
           row={r} col={c}
           color={checkered ? checker(r, c) : '#ccc'}
           onClick={clickBoardPosition}
+          debug
         />);
         if (piece) {
           pieces.push(<BoardPiece
@@ -110,6 +123,7 @@ export const BoardGameComponent = React.createClass({
             image={piece.image}
             pieceId={piece.pieceId}
             owner={piece.owner}
+            row={r} col={c}
             size={posSize}
             position={{ x: 0, y: 0 }}
             bounds={'parent'}
