@@ -64,7 +64,7 @@ export const Connect = React.createClass({
             onChange={(e)=>this.setState({ username: e.target.value})}
             fullWidth={true}
           /><br />
-          <button type="submit" style={{display: 'none'}}/>
+          <input type="submit" style={{position: 'absolute', left: -9999}}/>
         </form>
         </Dialog>
     </div>
