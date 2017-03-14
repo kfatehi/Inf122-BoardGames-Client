@@ -28,3 +28,10 @@ export function isValidMovement(moves, id, row, col) {
   }
   return false;
 }
+
+export const piecePosToCoord = (size, x, y, row, col, boardSize) => {
+  const flip = (n) => (boardSize * size) - n - size;
+  let newRow = flip(y) / size;
+  let newCol = x / size;
+  return { col: newCol, row: newRow };
+}

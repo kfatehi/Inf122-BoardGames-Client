@@ -114,12 +114,10 @@ export const dragStart = (pieceId) => {
 }
 
 export const dragStop = (pieceID, { row, col }) => {
-  console.log('dragstop', pieceID, row, col);
   return function(dispatch, getState) {
     dispatch({ type: "DRAG_STOP" });
     const { validMovements } = getState().gameState;
     if (isValidMovement(validMovements, pieceID, row, col)) {
-      console.log('valid, doing turn', pieceID, col, row);
       dispatch(toServer({ type: 'TURN', pieceID, c: col, r: row }));
     }
   }
