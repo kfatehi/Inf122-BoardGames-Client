@@ -2,51 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actionCreators from '../action-creators';
 
-import Draggable from 'react-draggable';
+import { BoardPosition } from './BoardPosition.jsx';
+import { BoardPiece } from './BoardPiece.jsx';
 
-import { getImagePath } from '../utils';
-
-
-const POS_SIZE = 50;
-
-export const BoardPiece = React.createClass({
-  render() {
-    const { image, owner, pieceId } = this.props;
-    let style = {
-      width: '100%',
-      height: '100%',
-      backgroundImage: `url(${getImagePath(image)})`,
-      backgroundSize: '100%'
-    };
-
-    const dragOpts = {
-      position: {x: 0, y:0},
-      onStop: (e, i)=>{
-        console.log(arguments);
-      }
-    }
-
-    return <Draggable {...dragOpts}><div style={style} /></Draggable>;
-  }
-});
-
-export const BoardPosition = React.createClass({
-  render() {
-    const { row, col, color, piece, onClick } = this.props;
-    let style = {
-      position: 'absolute',
-      top: row * POS_SIZE,
-      left: col * POS_SIZE,
-      height: POS_SIZE,
-      width: POS_SIZE,
-      border: '1px solid black',
-      backgroundColor: color
-    };
-    return <div style={style} onClick={()=>onClick(row, col)}>
-      {piece ? <BoardPiece {...piece} /> : null }
-    </div>
-  }
-});
+import { isValidMovement } from '../utils';
 
 export const BoardGameComponent = React.createClass({
   render() {
@@ -63,34 +22,75 @@ export const BoardGameComponent = React.createClass({
       turnType,
       gameEnded,
       endText,
+      posSize,
+      validMovements,
+      dragPieceId,
 
-      clickBoardPosition
+      clickBoardPosition,
+      dragStart,
+      dragStop
     } = this.props;
 
-    let checker = (row, col) => row % 2 === col % 2 ? '#CCC' : '#000';
+    let checker = (row, col) => row % 2 === col % 2 ? '#CCC' : '#666';
 
     let positions = [];
-    for (var i = 0; i < boardRows; i++)
-      for (var j = 0; j < boardCols; j++)
+    let pieces = [];
+
+    let piece, posStyle;
+
+    for (var r = 0; r < boardRows; r++) { 
+      for (var c = 0; c < boardCols; c++) {
+        posStyle =  {
+          bottom: r * posSize,
+          left: c * posSize,
+          height: posSize,
+          width: posSize,
+        };
+        piece = board[c][r];
         positions.push(<BoardPosition
-          key={`r${i}c${j}`}
-          row={i} col={j}
-          color={checkered ? checker(i, j) : '#ccc'}
-          piece={board[j][i]}
+          style={posStyle}
+          key={`r${r}c${c}`}
+          row={r} col={c}
+          color={checkered ? checker(r, c) : '#ccc'}
+          highlight={dragPieceId ? !isValidMovement(validMovements, dragPieceId, r, c) : false}
           onClick={clickBoardPosition}
+          debug
         />);
+        if (piece) {
+          pieces.push(<BoardPiece
+            id={piece.pieceId}
+            style={posStyle}
+            key={piece.pieceId}
+            image={piece.image}
+            pieceId={piece.pieceId}
+            owner={piece.owner}
+            row={r} col={c}
+            size={posSize}
+            dragStart={dragStart}
+            dragStop={dragStop}
+            position={{ x: 0, y: 0 }}
+            disabled={!(myTurn && turnType === "move")}
+            bounds={'parent'}
+          />)
+        }
+      }
+    }
 
     let boardStyle = {
-      width: boardCols * POS_SIZE,
-      height: boardRows * POS_SIZE,
-      position: 'relative'
+      width: boardCols * posSize,
+      height: boardRows * posSize,
+      position: 'relative',
+      margin: 'auto'
     }
     return <div>
       { gameEnded ? <p>{endText}</p> : ( myTurn ? <p>
         It's your turn to {turnType}
       </p> : <p>It's {turn}'s turn to {turnType}</p>) }
 
-      <div style={boardStyle}>{positions}</div>
+      <div style={boardStyle}>
+        {positions}
+        {pieces}
+      </div>
       <ul>
         <li>{username}</li>
         {opponents.map((name,i) => <li key={i}>{name}</li>)}
@@ -110,6 +110,10 @@ function mapStateToProps(state, props) {
       return `It's a DRAW!`
     }
   }
+  const boardSize = gs.board.length;
+  const clientSizePx = Math.min(innerHeight, innerWidth)
+  const margin = clientSizePx / 3;
+  const posSizePx = Math.floor((clientSizePx - margin) / boardSize);
   return {
     ...state.gameMeta,
     username: state.username,
@@ -118,7 +122,10 @@ function mapStateToProps(state, props) {
     turnType: gs.turnType,
     board: gs.board,
     gameEnded: state.gameEnded,
-    endText: state.gameEnded ? `The game has ended. ${whoWon()}` : null
+    endText: state.gameEnded ? `The game has ended. ${whoWon()}` : null,
+    posSize: posSizePx,
+    validMovements: gs.validMovements,
+    dragPieceId: gs.dragPieceId
   }
 }
 
