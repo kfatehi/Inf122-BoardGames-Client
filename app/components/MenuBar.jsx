@@ -17,7 +17,7 @@ export const MenuBar = ({
     <List>
       <ListItem onTouchTap={disconnect}>Disconnect</ListItem>
       <ListItem href="#/pugs/new" onTouchTap={toggle}>Start New Game</ListItem>
-      <ListItem href="#/pugs/new" onTouchTap={toggle}>Join Game</ListItem>
+      <ListItem href="#/" onTouchTap={toggle}>Join Game</ListItem>
     </List>
   </Drawer>
 </div>;

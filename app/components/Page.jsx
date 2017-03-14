@@ -15,6 +15,18 @@ import ActionAccountBox from 'material-ui/svg-icons/action/account-box';
 import Paper from 'material-ui/Paper';
 import ClearFix from 'material-ui/internal/ClearFix';
 import spacing from 'material-ui/styles/spacing';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+
+
+const ActionButtonStyle = {
+    margin: 0,
+    top: 'auto',
+    right: 40,
+    bottom: 40,
+    left: 'auto',
+    position: 'fixed',
+};
 
 const PageComponent = React.createClass({
   render: function () {
@@ -69,6 +81,11 @@ const PageComponent = React.createClass({
                     profile={profileOpenUser}
                   />
                 {this.props.children}
+                  <IconButton tooltip="Start New Game" tooltipPosition="top-left" href="#/pugs/new/" style={ActionButtonStyle}>
+                    <FloatingActionButton>
+                      <ContentAdd />
+                    </FloatingActionButton>
+                  </IconButton>
               </div>
             </ClearFix>
           </MuiThemeProvider>
