@@ -16,7 +16,7 @@ const initialState = {
   gameWinner: null,
   gameActive: false,
   gameMeta: null,
-  gameState: {},
+  gameState: {}
 };
 
 export default function(state=initialState, action) {
@@ -79,6 +79,12 @@ export default function(state=initialState, action) {
     }
     case 'GAME_END': {
       return { ...state, gameWinner: action.winner, gameEnded: true }
+    }
+    case 'DRAG_START': {
+      return { ...state, gameState: { ...state.gameState, dragPieceId: action.id } }
+    }
+    case 'DRAG_STOP': {
+      return { ...state, gameState: { ...state.gameState, dragPieceId: null } }
     }
   }
   return state;

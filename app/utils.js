@@ -19,3 +19,12 @@ export function getImagePath(imagePath) {
     return imagePath;
   }
 }
+
+export function isValidMovement(moves, id, row, col) {
+  let pieceMoves = moves.find(i=>i.pieceId === id);
+  if (pieceMoves) {
+    let move = pieceMoves.moves.find(({c,r})=> c===col && r===row);
+    if (move) return true;
+  }
+  return false;
+}

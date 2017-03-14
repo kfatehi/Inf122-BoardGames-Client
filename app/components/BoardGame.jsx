@@ -2,75 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actionCreators from '../action-creators';
 
-import Draggable from 'react-draggable';
+import { BoardPosition } from './BoardPosition.jsx';
+import { BoardPiece } from './BoardPiece.jsx';
 
-import { getImagePath } from '../utils';
-
-const piecePosToCoord = (size, x, y, row, col) => {
-
-  let newRow = row + (y / (-size));
-  let newCol = col + (x / (size));
-
-  return { col: newCol, row: newRow };
-
-}
-
-export const BoardPiece = React.createClass({
-  defaultStyle: function() {
-    return {
-      ...this.props.style,
-      backgroundImage: `url(${getImagePath(this.props.image)})`,
-      backgroundSize: '100%',
-      position: 'absolute',
-      zIndex: 5
-    }
-  },
-  getInitialState() {
-    return { style: this.defaultStyle() }
-  },
-  render() {
-    const { style } = this.state;
-    const { size, bounds, position, row, col } = this.props;
-    const grid = [size, size];
-
-    const dragStyle = { ...style, zIndex: 6 }
-
-    const dragOpts = {
-      bounds,
-      grid,
-      position,
-      onStart: (e, {x, y}) => {
-        //console.log('start', x, y);
-        this.setState({ style: dragStyle });
-      },
-      onStop: (e, {x, y})=>{
-        //console.log('stop', x, y);
-        this.setState({ style });
-      },
-      onDrag: (e, {x, y})=>{
-        const pos = piecePosToCoord(size, x, y, row, col);
-        console.log('move to position', pos.col, pos.row);
-      }
-    }
-
-    return <Draggable {...dragOpts}><div style={style} /></Draggable>;
-  }
-});
-
-export const BoardPosition = React.createClass({
-  render() {
-    const { row, col, color, onClick } = this.props;
-    let style = {
-      ...this.props.style,
-      position: 'absolute',
-      border: '1px solid black',
-      backgroundColor: color
-    };
-    return <div style={style} onClick={()=>onClick(row, col)}>
-      { this.props.debug ? <span>({col}, {row})</span> : null }
-    </div>;
-  }
-});
+import { isValidMovement } from '../utils';
 
 export const BoardGameComponent = React.createClass({
   render() {
@@ -88,8 +23,12 @@ export const BoardGameComponent = React.createClass({
       gameEnded,
       endText,
       posSize,
+      validMovements,
+      dragPieceId,
 
-      clickBoardPosition
+      clickBoardPosition,
+      dragStart,
+      dragStop
     } = this.props;
 
     let checker = (row, col) => row % 2 === col % 2 ? '#CCC' : '#666';
@@ -113,11 +52,13 @@ export const BoardGameComponent = React.createClass({
           key={`r${r}c${c}`}
           row={r} col={c}
           color={checkered ? checker(r, c) : '#ccc'}
+          highlight={dragPieceId ? !isValidMovement(validMovements, dragPieceId, r, c) : false}
           onClick={clickBoardPosition}
           debug
         />);
         if (piece) {
           pieces.push(<BoardPiece
+            id={piece.pieceId}
             style={posStyle}
             key={piece.pieceId}
             image={piece.image}
@@ -125,7 +66,10 @@ export const BoardGameComponent = React.createClass({
             owner={piece.owner}
             row={r} col={c}
             size={posSize}
+            dragStart={dragStart}
+            dragStop={dragStop}
             position={{ x: 0, y: 0 }}
+            disabled={!(myTurn && turnType === "move")}
             bounds={'parent'}
           />)
         }
@@ -179,7 +123,9 @@ function mapStateToProps(state, props) {
     board: gs.board,
     gameEnded: state.gameEnded,
     endText: state.gameEnded ? `The game has ended. ${whoWon()}` : null,
-    posSize: posSizePx
+    posSize: posSizePx,
+    validMovements: gs.validMovements,
+    dragPieceId: gs.dragPieceId
   }
 }
 
