@@ -1,12 +1,12 @@
 import React from 'react';
 import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
+import {List, ListItem} from 'material-ui/List';
 import RaisedButton from 'material-ui/RaisedButton';
 
 export const MenuBar = ({
+  open,
   toggle,
   disconnect,
-  open
 })=> <div>
   <Drawer
     docked={false}
@@ -14,8 +14,11 @@ export const MenuBar = ({
     open={open}
     onRequestChange={toggle}
   >
-    <MenuItem onTouchTap={toggle}>Profile</MenuItem>
-    <MenuItem onTouchTap={disconnect}>Disconnect</MenuItem>
+    <List>
+      <ListItem onTouchTap={disconnect}>Disconnect</ListItem>
+      <ListItem href="#/pugs/new" onTouchTap={toggle}>Start New Game</ListItem>
+      <ListItem href="#/pugs/new" onTouchTap={toggle}>Join Game</ListItem>
+    </List>
   </Drawer>
 </div>;
 

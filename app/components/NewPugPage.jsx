@@ -2,10 +2,36 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actionCreators from '../action-creators';
 import { Link } from 'react-router';
-
 import { Page } from './Page.jsx';
-
 import { getImagePath } from '../utils';
+import {GridList, GridTile} from 'material-ui/GridList';
+import Subheader from 'material-ui/Subheader';
+import IconButton from 'material-ui/IconButton';
+import ContentAddCircle from 'material-ui/svg-icons/content/add-circle';
+
+const styles = {
+  root: {
+    //display: 'flex',
+    //flexWrap: 'wrap',
+    //justifyContent: 'center',
+  },
+  gridList: {
+    display: 'flex',
+    flexFlow: 'row wrap',
+    flextWrap: 'nowrap',
+    justifyContent: 'space-around',
+  },
+  gridTile: {
+    width: 180,
+    height: 180,
+    margin: 'auto',
+  },
+  iconButton: {
+    width: 60,
+    height: 60,
+    padding: 5,
+  },
+};
 
 export const NewPug = React.createClass({
   getInitialState() {
@@ -23,28 +49,45 @@ export const NewPug = React.createClass({
   },
   render() {
     return <Page>
-      <form onSubmit={(e)=>e.preventDefault()}>
-      { this.state.gameName ? <input
-        type="text"
-        value={this.state.pugName}
-        placeholder="name"
-        onChange={(e)=>this.setState({ pugName: e.target.value})}
-      /> : this.props.supportedGames.map(({
-        name, image, maxPlayers
-      }, i)=><div key={i}>
-        <a href="#" onClick={(e)=>{
-          e.preventDefault();
-          this.setState({ gameName: name });
-        }}>
-          <img src={getImagePath(image)} alt={name} className="game-thumbnail"/>
-          <span>{name}</span>
-        </a>
-      </div>)
-      }
-
-      <button onClick={this.props.router.goBack}>Cancel</button>
-      <button disabled={!this.isValid()} type="submit" onClick={this.submit}>Submit</button>
-    </form>
+      <h2>Start New Game</h2>
+      <div style={styles.root}>
+        <GridList
+          cellHeight={'auto'}
+          cols={0}
+          padding={20}
+          style={styles.gridList}
+        >
+          { this.state.gameName ? <input
+            type="text"
+            value={this.state.pugName}
+            placeholder="name"
+            onChange={(e)=>this.setState({ pugName: e.target.value})}
+            /> : this.props.supportedGames.map(({
+              name, image, maxPlayers
+            }, i)=>
+              <GridTile
+                key={i}
+                title={name}
+                subtitle={<span>Max Players: <b>{maxPlayers}</b></span>}
+                style={styles.gridTile}
+                actionIcon={<IconButton
+                  href="#"
+                  onTouchTap={(e)=>{
+                    e.preventDefault();
+                    this.setState({ gameName: name });
+                  }}
+                  tooltip="Create Pick Up Game"
+                  tooltipPosition="top-left"
+                  style={styles.iconButton}
+                ><ContentAddCircle id="gridIcon" /></IconButton>}
+              >
+                <img src={getImagePath(image)} alt={name} className="game-thumbnail"/>
+                </GridTile>
+            )}
+      </GridList>
+    </div>
+          <button onClick={this.props.router.goBack}>Cancel</button>
+          <button disabled={!this.isValid()} type="submit" onClick={this.submit}>Submit</button>
   </Page>;
   },
 });
@@ -56,4 +99,4 @@ function mapStateToProps(state) {
   };
 }
 
-export const NewPugPage = connect(mapStateToProps, actionCreators)(NewPug); 
+export const NewPugPage = connect(mapStateToProps, actionCreators)(NewPug);
