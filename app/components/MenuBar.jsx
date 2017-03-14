@@ -13,8 +13,8 @@ export const MenuBar = ({
     open={open}
     onRequestChange={toggle}
   >
-    <MenuItem onTouchTap={toggle}>Menu Item</MenuItem>
-    <MenuItem onTouchTap={toggle}>Menu Item 2</MenuItem>
+    <MenuItem onTouchTap={toggle}>Profile</MenuItem>
+    <MenuItem onTouchTap={toggle}>Close Menu</MenuItem>
   </Drawer>
 </div>;
 

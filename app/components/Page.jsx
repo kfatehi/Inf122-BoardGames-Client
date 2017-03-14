@@ -48,19 +48,20 @@ const PageComponent = React.createClass({
             />
           </MuiThemeProvider>
           <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-            <MenuBar open={menuBarOpen} toggle={toggleMenuBar} />
+          <MenuBar
+            open={menuBarOpen}
+            toggle={toggleMenuBar}
+          />
           </MuiThemeProvider>
           <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
             <ClearFix style={{padding: spacing.desktopGutter, boxSizing: 'border-box'}}>
               <div id='content' style={{maxWidth: 1200, margin: '0 auto',}}>
-                { profileOpenUser ?
                   <PlayerProfile
-                    username={profileOpenUser.username}
-                    games={profileOpenUser.games}
                     closeAction={closeProfile}
+                    open={!!profileOpenUser}
+                    profile={profileOpenUser}
                   />
-                  : <button onClick={()=>openProfile(username)}>My Profile</button>
-                }
+                 <button onClick={()=>openProfile(username)}>My Profile</button>
                 {this.props.children}
               </div>
             </ClearFix>
