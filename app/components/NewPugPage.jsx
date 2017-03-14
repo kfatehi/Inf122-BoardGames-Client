@@ -79,7 +79,7 @@ export const NewPug = React.createClass({
                 onChange={(e)=>this.setState({ pugName: e.target.value})}
                 fullWidth={true}
               /><br />
-              <button type="submit" style={{display: 'none'}}/>
+              <input type="submit" style={{position: 'absolute', left: -9999}}/>
             </form>
           </Dialog>
         : this.props.supportedGames.map(({name, image, maxPlayers}, i)=>
