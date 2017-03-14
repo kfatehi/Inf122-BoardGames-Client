@@ -5,7 +5,6 @@ import { Link } from 'react-router';
 import { Page } from './Page.jsx';
 import { getImagePath } from '../utils';
 import {GridList, GridTile} from 'material-ui/GridList';
-import Subheader from 'material-ui/Subheader';
 import IconButton from 'material-ui/IconButton';
 import ContentAddCircle from 'material-ui/svg-icons/content/add-circle';
 import Dialog from 'material-ui/Dialog';
@@ -61,7 +60,7 @@ export const NewPug = React.createClass({
             title="Name Your New Pick Up Game"
             modal={false}
             actions={[<FlatButton
-              label="Create"
+              label="Start"
               onTouchTap={this.submit}
               disabled={!this.isValid()}
               primary={true}/>,
@@ -72,8 +71,6 @@ export const NewPug = React.createClass({
               ]}
             open={!!this.state.gameName}
             onRequestClose={this.closeDialog}
-            type="text"
-            placeholder="name"
           >
             <form onSubmit={this.submit}>
               <TextField
@@ -97,7 +94,7 @@ export const NewPug = React.createClass({
                 e.preventDefault();
                 this.setState({ gameName: name });
               }}
-              tooltip={<p>Start Pick Up Game of {name}</p>}
+              tooltip={<p>Start a Game of {name}</p>}
               tooltipPosition="top-left"
               style={styles.iconButton}
               ><ContentAddCircle id="gridIcon" /></IconButton>}
