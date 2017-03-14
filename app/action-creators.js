@@ -96,7 +96,10 @@ export const openProfile = (username) => {
   }
 }
 
-
 export const closeProfile = () => {
   return { type: "CLOSE_USER_PROFILE" }
+}
+
+export const toggleMenuBar = () => {
+  return { type: "TOGGLE_MENUBAR" }
 }

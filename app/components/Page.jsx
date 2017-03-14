@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as actionCreators from '../action-creators';
 import { ConnectForm } from './ConnectForm.jsx';
 import { PlayerProfile } from './PlayerProfile.jsx';
+import { MenuBar } from './MenuBar.jsx';
 import { Link } from 'react-router';
 import Favicon from 'react-favicon';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
@@ -23,12 +24,14 @@ const PageComponent = React.createClass({
       connected,
       connectionError,
       profileOpenUser,
+      menuBarOpen,
       openGames,
       supportedGames,
       disconnect,
       toServer,
       openProfile,
       closeProfile,
+      toggleMenuBar,
     } = this.props;
     return <div>
       <Favicon url="http://findicons.com/files/icons/1786/oxygen_refit/128/package_games_board.png" />
@@ -41,7 +44,11 @@ const PageComponent = React.createClass({
             <AppBar
               title="Bored Games - INF122 Final Project "
               iconElementRight={<FlatButton label="Disconnect" onTouchTap={disconnect}/>}
+              onLeftIconButtonTouchTap={toggleMenuBar}
             />
+          </MuiThemeProvider>
+          <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+            <MenuBar open={menuBarOpen} toggle={toggleMenuBar} />
           </MuiThemeProvider>
           <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
             <ClearFix style={{padding: spacing.desktopGutter, boxSizing: 'border-box'}}>
@@ -76,7 +83,8 @@ function mapStateToProps(state) {
     connected: state.connected,
     connectionError: state.connectionError,
     userProfiles: state.userProfiles,
-    profileOpenUser: state.profileOpenUser
+    profileOpenUser: state.profileOpenUser,
+    menuBarOpen: state.menuBarOpen
   }
 }
 

@@ -8,11 +8,13 @@ export const PlayerProfile = ({
   games,
   closeAction
 })=> <Card>
-  <CardTitle
+  <CardHeader
     title={username}
     subtitle="Player Profile"
+    avatar="../../player.png"
+    style={{padding: "16px 16px 0 16px"}}
   />
-  <CardText>
+  <CardText style={{padding: "0 16px 16px 16px"}}>
     <List>
       {games.map(({
         gameType,
@@ -27,6 +29,8 @@ export const PlayerProfile = ({
         }
       />)}
     </List>
-    <button onClick={closeAction}>Close</button>
+    <CardActions>
+      <FlatButton label="Close" onTouchTap={closeAction} />
+    </CardActions>
   </CardText>
 </Card>;

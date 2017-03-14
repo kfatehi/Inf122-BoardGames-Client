@@ -9,6 +9,7 @@ const initialState = {
   connectionError: null,
   userProfiles: {},
   profileOpenUser: null,
+  menuBarOpen: false,
   openGames: [],
   supportedGames: [],
   gameEnded: false,
@@ -41,6 +42,9 @@ export default function(state=initialState, action) {
     }
     case 'CLOSE_USER_PROFILE': {
       return { ...state, profileOpenUser: null }
+    }
+    case 'TOGGLE_MENUBAR': {
+      return { ...state, menuBarOpen: !state.menuBarOpen }
     }
     case 'SET_USER_PROFILE': {
       return { ...state, profileOpenUser: { username: action.username, games: action.games } }
