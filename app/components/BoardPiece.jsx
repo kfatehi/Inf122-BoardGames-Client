@@ -19,10 +19,10 @@ export const BoardPiece = React.createClass({
       position: this.calcPosition(this.props)
     }
   },
-  calcPosition({ row, col, size, boardSize }) {
+  calcPosition({ row, col, size, boardSize, boardRows, needsFlip }) {
     return {
       x: col * size,
-      y: - ( (row + 1) * size ) + ( boardSize * size )
+      y: - ( (doFlip(row, boardRows, needsFlip) + 1) * size ) + ( boardSize * size )
     }
   },
   componentWillReceiveProps(nextProps) {
@@ -47,7 +47,7 @@ export const BoardPiece = React.createClass({
       onStop: ()=>{
         this.setState({ style });
         const { x , y } = this.state.position;
-        const attempt = piecePosToCoord(size, x, y, row, col, this.props.boardSize)
+        const attempt = piecePosToCoord(size, x, y, row, col, this.props.boardSize, this.props.boardRows, this.props.needsFlip)
         dragStop(id, attempt);
         if (!validDrag(attempt)) {
           this.setState({ position: this.state.prevPosition });

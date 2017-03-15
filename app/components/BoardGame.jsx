@@ -46,7 +46,7 @@ export const BoardGameComponent = React.createClass({
     for (var r = 0; r < boardRows; r++) {
       for (var c = 0; c < boardCols; c++) {
         posStyle =  {
-          bottom: r * posSize,
+          bottom: doFlip(r, boardRows, needsFlip) * posSize,
           left: c * posSize,
           height: posSize,
           width: posSize,
@@ -75,6 +75,9 @@ export const BoardGameComponent = React.createClass({
             disabled={(piece.owner !== username) || !(myTurn && turnType === "move")}
             validDrag={validDrag(piece.pieceId)}
             bounds={'parent'}
+			boardRows={boardRows}
+			boardCols={boardCols}
+			needsFlip={needsFlip}
           />)
         }
       }
