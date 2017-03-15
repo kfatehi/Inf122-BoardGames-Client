@@ -1,5 +1,5 @@
 import React from 'react';
-import { piecePosToCoord, getImagePath } from '../utils';
+import { piecePosToCoord, getImagePath, doFlip } from '../utils';
 import Draggable from 'react-draggable';
 
 export const BoardPiece = React.createClass({
