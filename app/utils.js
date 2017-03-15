@@ -33,7 +33,7 @@ export const piecePosToCoord = (size, x, y, row, col, boardSize, boardRows, need
   const flip = (n) => (boardSize * size) - n - size;
   let newRow = flip(y) / size;
   let newCol = x / size;
-  return { col: newCol, row: doFlip(newRow, boardRows, needsFlip) };
+  return { col: doFlip(newCol, boardRows, needsFlip), row: doFlip(newRow, boardRows, needsFlip) };
 }
 
 export const doFlip = (row, boardRows, needsFlip) => {

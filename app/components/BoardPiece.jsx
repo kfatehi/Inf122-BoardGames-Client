@@ -21,7 +21,7 @@ export const BoardPiece = React.createClass({
   },
   calcPosition({ row, col, size, boardSize, boardRows, needsFlip }) {
     return {
-      x: col * size,
+      x: doFlip(col, boardRows, needsFlip) * size,
       y: - ( (doFlip(row, boardRows, needsFlip) + 1) * size ) + ( boardSize * size )
     }
   },

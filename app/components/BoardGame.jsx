@@ -47,7 +47,7 @@ export const BoardGameComponent = React.createClass({
       for (var c = 0; c < boardCols; c++) {
         posStyle =  {
           bottom: doFlip(r, boardRows, needsFlip) * posSize,
-          left: c * posSize,
+          left: doFlip(c, boardCols, needsFlip) * posSize,
           height: posSize,
           width: posSize,
         };
