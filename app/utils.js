@@ -29,9 +29,13 @@ export function isValidMovement(moves, id, row, col) {
   return false;
 }
 
-export const piecePosToCoord = (size, x, y, row, col, boardSize) => {
+export const piecePosToCoord = (size, x, y, row, col, boardSize, boardRows, needsFlip) => {
   const flip = (n) => (boardSize * size) - n - size;
   let newRow = flip(y) / size;
   let newCol = x / size;
-  return { col: newCol, row: newRow };
+  return { col: doFlip(newCol, boardRows, needsFlip), row: doFlip(newRow, boardRows, needsFlip) };
+}
+
+export const doFlip = (row, boardRows, needsFlip) => {
+	return needsFlip ? boardRows - 1 - row : row;
 }

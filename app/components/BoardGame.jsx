@@ -5,7 +5,7 @@ import * as actionCreators from '../action-creators';
 import { BoardPosition } from './BoardPosition.jsx';
 import { BoardPiece } from './BoardPiece.jsx';
 
-import { coordToPiecePos, isValidMovement } from '../utils';
+import { coordToPiecePos, isValidMovement, doFlip } from '../utils';
 
 export const BoardGameComponent = React.createClass({
   render() {
@@ -46,8 +46,8 @@ export const BoardGameComponent = React.createClass({
     for (var r = 0; r < boardRows; r++) {
       for (var c = 0; c < boardCols; c++) {
         posStyle =  {
-          bottom: r * posSize,
-          left: c * posSize,
+          bottom: doFlip(r, boardRows, needsFlip) * posSize,
+          left: doFlip(c, boardCols, needsFlip) * posSize,
           height: posSize,
           width: posSize,
         };
@@ -75,6 +75,9 @@ export const BoardGameComponent = React.createClass({
             disabled={(piece.owner !== username) || !(myTurn && turnType === "move")}
             validDrag={validDrag(piece.pieceId)}
             bounds={'parent'}
+            boardRows={boardRows}
+            boardCols={boardCols}
+            needsFlip={needsFlip}
           />)
         }
       }
