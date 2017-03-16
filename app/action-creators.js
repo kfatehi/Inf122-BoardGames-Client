@@ -107,6 +107,10 @@ export const toggleMenuBar = () => {
   return { type: "TOGGLE_MENUBAR" }
 }
 
+export const clearGame = () => {
+  return { type: "CLEAR_GAME" }
+}
+
 export const dragStart = (pieceId) => {
   return function(dispatch, getState) {
     dispatch({ type: "DRAG_START", id: pieceId });

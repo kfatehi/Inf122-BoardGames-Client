@@ -80,6 +80,9 @@ export default function(state=initialState, action) {
     case 'GAME_END': {
       return { ...state, gameWinner: action.winner, gameEnded: true }
     }
+    case 'CLEAR_GAME': {
+      return { ...state, gameWinner: null, gameEnded: false, gameActive: false, gameState: {}, gameMeta: null }
+    }
     case 'DRAG_START': {
       return { ...state, gameState: { ...state.gameState, dragPieceId: action.id } }
     }

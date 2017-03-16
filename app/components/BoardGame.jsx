@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as actionCreators from '../action-creators';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 import { BoardPosition } from './BoardPosition.jsx';
 import { BoardPiece } from './BoardPiece.jsx';
@@ -29,7 +31,8 @@ export const BoardGameComponent = React.createClass({
 
       clickBoardPosition,
       dragStart,
-      dragStop
+      dragStop,
+      clearGame,
     } = this.props;
 
     const validDrag = pieceId => ({row, col}) => {
@@ -90,7 +93,24 @@ export const BoardGameComponent = React.createClass({
       margin: 'auto'
     }
     return <div>
-      { gameEnded ? <p>{endText}</p> : ( myTurn ? <p>
+      { gameEnded ? <Dialog
+            title={myTurn ? <p> You Lost!!! </p> : <p> You Won!!! </p> }
+            modal={true}
+            open={true}
+            actions={[<FlatButton
+              label="Join New Pickup Game"
+              onTouchTap={clearGame}
+              href="#/"
+              primary={true}/>,
+              <FlatButton
+              label="Create New Pickup Game"
+              href="#/"
+              onTouchTap={clearGame}
+              primary={false}/>,
+              ]}
+          >
+          </Dialog>
+      : ( myTurn ? <p>
         It's your turn to {turnType}
       </p> : <p>It's {turn}'s turn to {turnType}</p>) }
 
