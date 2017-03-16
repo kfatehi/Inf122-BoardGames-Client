@@ -7,6 +7,15 @@ import { BoardPiece } from './BoardPiece.jsx';
 
 import { coordToPiecePos, isValidMovement, doFlip } from '../utils';
 
+import IconButton from 'material-ui/IconButton';
+import ActionAccountBox from 'material-ui/svg-icons/action/account-box'; 
+
+const iconButtonStyle = {
+	width: 60,
+	height: 60,
+	padding: 5,
+}
+
 export const BoardGameComponent = React.createClass({
   render() {
     const {
@@ -29,7 +38,8 @@ export const BoardGameComponent = React.createClass({
 
       clickBoardPosition,
       dragStart,
-      dragStop
+      dragStop,
+      finishGame
     } = this.props;
 
     const validDrag = pieceId => ({row, col}) => {
@@ -83,6 +93,7 @@ export const BoardGameComponent = React.createClass({
       }
     }
 
+
     let boardStyle = {
       width: boardCols * posSize,
       height: boardRows * posSize,
@@ -90,7 +101,11 @@ export const BoardGameComponent = React.createClass({
       margin: 'auto'
     }
     return <div>
-      { gameEnded ? <p>{endText}</p> : ( myTurn ? <p>
+      { gameEnded ? (<div><p>{endText}</p><IconButton
+		  onTouchTap={this.finishGame}
+		  tooltip="Leave game"
+		  tooltipPosition="bottom-left"
+		  ><ActionAccountBox /></IconButton></div>) : ( myTurn ? <p>
         It's your turn to {turnType}
       </p> : <p>It's {turn}'s turn to {turnType}</p>) }
 

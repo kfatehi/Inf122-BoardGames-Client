@@ -122,3 +122,7 @@ export const dragStop = (pieceID, { row, col }) => {
     }
   }
 }
+
+export const finishGame = () => {
+	return { type: "FINISH_GAME" }
+}
