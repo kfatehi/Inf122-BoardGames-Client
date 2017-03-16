@@ -62,7 +62,6 @@ export const BoardGameComponent = React.createClass({
           color={checkered ? checker(r, c) : '#ccc'}
           highlight={dragPieceId ? !isValidMovement(validMovements, dragPieceId, r, c) : false}
           onClick={clickBoardPosition}
-          debug
         />);
         if (piece) {
           pieces.push(<BoardPiece
