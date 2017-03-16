@@ -99,12 +99,12 @@ export const BoardGameComponent = React.createClass({
             open={true}
             actions={[<FlatButton
               label="Join New Pickup Game"
-              onTouchTap={clearGameAndRedirect('/')}
+              onTouchTap={()=>clearGameAndRedirect('/')}
               primary={true}/>,
               <FlatButton
               label="Create New Pickup Game"
               href="#/"
-              onTouchTap={clearGameAndRedirect('/pugs/new')}
+              onTouchTap={()=>clearGameAndRedirect('/pugs/new')}
               primary={false}/>,
               ]}
           >
