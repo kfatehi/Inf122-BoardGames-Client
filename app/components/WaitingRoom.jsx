@@ -14,7 +14,8 @@ export const WaitingRoomComponent = React.createClass({
         <p>Waiting for {need} more player{need === 1 ? '' : 's'}.</p>
         <CircularProgress size={80} thickness={5} />
         { imJoined ? null : <span>{joinGame(id)}</span>}
-      </div> : <div>
+        </div>
+      : <div>
       <p>This is not an open game. It may be full or not exist.</p>
       <p><Link to="/">Click here to go back home</Link></p>
     </div> }

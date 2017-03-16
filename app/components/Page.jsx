@@ -65,12 +65,12 @@ const PageComponent = React.createClass({
             />
           </MuiThemeProvider>
           <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-          <MenuBar
-            open={menuBarOpen}
-            toggle={toggleMenuBar}
-            disconnect={disconnect}
-            games={openGames}
-          />
+            <MenuBar
+              open={menuBarOpen}
+              toggle={toggleMenuBar}
+              disconnect={disconnect}
+              games={openGames}
+            />
           </MuiThemeProvider>
           <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
             <ClearFix style={{padding: spacing.desktopGutter, boxSizing: 'border-box'}}>
@@ -81,11 +81,11 @@ const PageComponent = React.createClass({
                     profile={profileOpenUser}
                   />
                 {this.props.children}
-                  <IconButton tooltip="Start New Game" tooltipPosition="top-left" href="#/pugs/new/" style={ActionButtonStyle}>
-                    <FloatingActionButton>
-                      <ContentAdd />
-                    </FloatingActionButton>
-                  </IconButton>
+                <IconButton tooltip="Start New Game" tooltipPosition="top-left" href="#/pugs/new/" style={ActionButtonStyle}>
+                  <FloatingActionButton>
+                    <ContentAdd />
+                  </FloatingActionButton>
+                </IconButton>
               </div>
             </ClearFix>
           </MuiThemeProvider>

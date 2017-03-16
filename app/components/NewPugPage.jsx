@@ -6,7 +6,7 @@ import { Page } from './Page.jsx';
 import { getImagePath } from '../utils';
 import {GridList, GridTile} from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
-import ContentAddCircle from 'material-ui/svg-icons/content/add-circle';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
@@ -22,6 +22,7 @@ const styles = {
     width: 180,
     height: 180,
     margin: 'auto',
+    cursor: 'pointer',
   },
   iconButton: {
     width: 60,
@@ -78,12 +79,17 @@ export const NewPug = React.createClass({
                 value={this.state.pugName}
                 onChange={(e)=>this.setState({ pugName: e.target.value})}
                 fullWidth={true}
+                autoFocus
               /><br />
               <input type="submit" style={{position: 'absolute', left: -9999}}/>
             </form>
           </Dialog>
         : this.props.supportedGames.map(({name, image, maxPlayers}, i)=>
           <GridTile
+            onTouchTap={(e)=>{
+              e.preventDefault();
+              this.setState({ gameName: name });
+            }}
             key={i}
             title={name}
             subtitle={<span>Max Players: <b>{maxPlayers}</b></span>}
@@ -97,7 +103,7 @@ export const NewPug = React.createClass({
               tooltip={<p>Start a Game of {name}</p>}
               tooltipPosition="top-left"
               style={styles.iconButton}
-              ><ContentAddCircle id="gridIcon" /></IconButton>}
+              ><ContentAdd id="gridIcon" /></IconButton>}
             >
               <img src={getImagePath(image)} alt={name} className="game-thumbnail"/>
             </GridTile>
