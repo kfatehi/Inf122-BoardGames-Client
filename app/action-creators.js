@@ -107,8 +107,11 @@ export const toggleMenuBar = () => {
   return { type: "TOGGLE_MENUBAR" }
 }
 
-export const clearGame = () => {
-  return { type: "CLEAR_GAME" }
+export const clearGameAndRedirect = (newRoute) => {
+  return function(dispatch, getState) {
+    dispatch({ type: "CLEAR_GAME" });
+    hashHistory.push(newRoute);
+  }
 }
 
 export const dragStart = (pieceId) => {

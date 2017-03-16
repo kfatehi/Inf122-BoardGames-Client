@@ -32,7 +32,7 @@ export const BoardGameComponent = React.createClass({
       clickBoardPosition,
       dragStart,
       dragStop,
-      clearGame,
+      clearGameAndRedirect,
     } = this.props;
 
     const validDrag = pieceId => ({row, col}) => {
@@ -99,13 +99,12 @@ export const BoardGameComponent = React.createClass({
             open={true}
             actions={[<FlatButton
               label="Join New Pickup Game"
-              onTouchTap={clearGame}
-              href="#/"
+              onTouchTap={clearGameAndRedirect('/')}
               primary={true}/>,
               <FlatButton
               label="Create New Pickup Game"
               href="#/"
-              onTouchTap={clearGame}
+              onTouchTap={clearGameAndRedirect('/pugs/new')}
               primary={false}/>,
               ]}
           >
