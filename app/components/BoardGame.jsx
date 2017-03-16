@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { PlayerProfile } from './PlayerProfile.jsx'
 import * as actionCreators from '../action-creators';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -118,7 +119,11 @@ export const BoardGameComponent = React.createClass({
       </div>
       <ul>
         <li>{username}</li>
-        {opponents.map((name,i) => <li key={i}>{name}</li>)}
+        {opponents.map((name,i) => <li key={i}>
+          <FlatButton
+            label={name}
+            onTouchTap={this.props.openProfile( name )} />
+          </li>)}
       </ul>
     </div>;
   }
