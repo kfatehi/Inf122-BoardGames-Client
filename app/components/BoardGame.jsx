@@ -118,11 +118,10 @@ export const BoardGameComponent = React.createClass({
         {pieces}
       </div>
       <ul>
-        <li>{username}</li>
-        {opponents.map((name,i) => <li key={i}>
+        {[username, ...opponents].map((name,i) => <li key={i}>
           <FlatButton
             label={name}
-            onTouchTap={this.props.openProfile( name )} />
+            onTouchTap={()=>this.props.openProfile( name )} />
           </li>)}
       </ul>
     </div>;
